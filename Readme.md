@@ -24,7 +24,7 @@ The easiest way to use AFLGo is as patch testing tool in OSS-Fuzz. Here is our i
 1) Install LLVM with Gold-plugin
 ```bash
 LLVM_DEP_PACKAGES="build-essential make cmake ninja-build git subversion python2.7 binutils-gold binutils-dev"
-apt-get install -y $LLVM_DEP_PACKAGES
+sudo apt-get install -y $LLVM_DEP_PACKAGES
 
 # Checkout
 
@@ -93,7 +93,7 @@ sudo apt-get update
 sudo apt-get install python3
 sudo apt-get install python3-dev
 sudo apt-get install python3-pip
-sudo apt-get install autogen
+sudo apt-get install autoconf
 sudo apt-get install automake
 sudo apt-get install libtool-bin
 sudo pip3 install --upgrade pip
