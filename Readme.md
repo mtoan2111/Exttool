@@ -195,6 +195,14 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Instrument subject (i.e., libxml2)
 ```bash
+export AFLGO=/path/to/integrated/tool
+cd $AFLGO
+make clean all
+cd llvm_mode/lowfat
+./install
+cd ..
+make clean all
+cd ~
 export CC=$AFLGO/afl-clang-fast
 export CXX=$AFLGO/afl-clang-fast++
 export CFLAGS="$COPY_CFLAGS -distance=$TMP_DIR/distance.cfg.txt"
