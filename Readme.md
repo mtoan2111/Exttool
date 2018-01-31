@@ -195,6 +195,7 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Instrument subject (i.e., libxml2)
 ```bash
+unset AFLGO CC CXX
 export AFLGO=/path/to/integrated/tool
 cd $AFLGO
 make clean all
