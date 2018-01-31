@@ -78,7 +78,7 @@ ninja install-cxx
 # Pull trunk libfuzzer.
 cd ~ && git clone https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer libfuzzer
 
-sudo cp $SRC/llvm/tools/sancov/coverage-report-server.py /usr/local/bin/
+sudo cp ~/llvm-4.0.0.src/tools/sancov/coverage-report-server.py /usr/local/bin/
 
 # Install LLVMgold into bfd-plugins
 sudo mkdir /usr/lib/bfd-plugins
