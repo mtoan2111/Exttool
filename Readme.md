@@ -193,7 +193,14 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 9) Instrument subject (i.e., libxml2)
 ```bash
 unset AFLGO CC CXX
-export AFLGO=/path/to/integrated/tool/
+export AFLGO=/path/to/integrated/tool
+cd $AFLGO
+make clean all
+cd llvm_mode/lowfat
+./install
+cd ..
+make clean all
+cd ~
 export CC=$AFLGO/afl-clang-fast
 export CXX=$AFLGO/afl-clang-fast++
 export CFLAGS="$COPY_CFLAGS -distance=$TMP_DIR/distance.cfg.txt"
