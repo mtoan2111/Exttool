@@ -50,9 +50,9 @@ tar xf libcxx-4.0.0.src.tar.xz
 tar xf libcxxabi-4.0.0.src.tar.xz
 
 mv cfe-4.0.0.src ~/llvm-4.0.0.src/tools/clang
-mv compiler-rt-4.0.0.src ~/llvm-4.0.0.src/lib/projects/compiler-rt
-mv libcxx-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxx
-mv libcxxabi-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxxabi
+mv compiler-rt-4.0.0.src ~/llvm-4.0.0.src/projects/compiler-rt
+mv libcxx-4.0.0.src ~/llvm-4.0.0.src/projects/libcxx
+mv libcxxabi-4.0.0.src ~/llvm-4.0.0.src/projects/libcxxabi
 
 # Build & install
 mkdir -p ~/build-llvm/llvm
