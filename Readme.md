@@ -62,7 +62,7 @@ cmake -G "Ninja" \
       -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
       -DLLVM_BINUTILS_INCDIR=/usr/include ~/llvm-4.0.0.src
 ninja
-ninja install
+sudo ninja install
 
 mkdir -p ~/build-llvm/msan
 cd ~/build-llvm/msan
@@ -73,7 +73,7 @@ cmake -G "Ninja" \
       -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
        ~/llvm-4.0.0.src
 ninja cxx
-ninja install-cxx
+sudo ninja install-cxx
 
 # Pull trunk libfuzzer.
 cd ~ && git clone https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer libfuzzer
