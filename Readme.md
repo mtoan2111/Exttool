@@ -49,7 +49,7 @@ tar xf compiler-rt-4.0.0.src.tar.xz
 tar xf libcxx-4.0.0.src.tar.xz
 tar xf libcxxabi-4.0.0.src.tar.xz
 
-mv cfe-4.0.0.src.tar.xz ~/llvm-4.0.0.src/tool/clang
+mv cfe-4.0.0.src ~/llvm-4.0.0.src/tools/clang
 mv compiler-rt-4.0.0.src ~/llvm-4.0.0.src/lib/projects/compiler-rt
 mv libcxx-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxx
 mv libcxxabi-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxxabi
