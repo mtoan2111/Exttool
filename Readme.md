@@ -49,10 +49,10 @@ tar xf compiler-rt-4.0.0.src.tar.xz
 tar xf libcxx-4.0.0.src.tar.xz
 tar xf libcxxabi-4.0.0.src.tar.xz
 
-mv cfe-4.0.0.src.tar.xz ~/llvm-4.0.0.src/tool/clang
-mv compiler-rt-4.0.0.src ~/llvm-4.0.0.src/lib/projects/compiler-rt
-mv libcxx-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxx
-mv libcxxabi-4.0.0.src ~/llvm-4.0.0.src/lib/projects/libcxxabi
+mv cfe-4.0.0.src ~/llvm-4.0.0.src/tools/clang
+mv compiler-rt-4.0.0.src ~/llvm-4.0.0.src/projects/compiler-rt
+mv libcxx-4.0.0.src ~/llvm-4.0.0.src/projects/libcxx
+mv libcxxabi-4.0.0.src ~/llvm-4.0.0.src/projects/libcxxabi
 
 # Build & install
 mkdir -p ~/build-llvm/llvm
@@ -62,7 +62,7 @@ cmake -G "Ninja" \
       -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
       -DLLVM_BINUTILS_INCDIR=/usr/include ~/llvm-4.0.0.src
 ninja
-ninja install
+sudo ninja install
 
 mkdir -p ~/build-llvm/msan
 cd ~/build-llvm/msan
@@ -73,7 +73,7 @@ cmake -G "Ninja" \
       -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" \
        ~/llvm-4.0.0.src
 ninja cxx
-ninja install-cxx
+sudo ninja install-cxx
 
 # Pull trunk libfuzzer.
 cd ~ && git clone https://chromium.googlesource.com/chromium/llvm-project/llvm/lib/Fuzzer libfuzzer
