@@ -120,12 +120,14 @@ popd
 git clone git://git.gnome.org/libxml2
 export SUBJECT=$PWD/libxml2
 ```
-5A) Set targets (e.g., changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>). Writes BBtargets.txt.
+5) Set targets (e.g., changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>). Writes BBtargets.txt.
 ```bash
 # Setup directory containing all temporary files
 mkdir temp
 export TMP_DIR=$PWD/temp
-
+```
+* Solution 1:
+```bash
 # Download commit-analysis tool
 wget https://raw.githubusercontent.com/jay/showlinenum/develop/showlinenum.awk
 chmod +x showlinenum.awk
@@ -137,7 +139,8 @@ pushd $SUBJECT
   git diff -U0 HEAD^ HEAD > $TMP_DIR/commit.diff
 popd
 cat $TMP_DIR/commit.diff |  $TMP_DIR/showlinenum.awk show_header=0 path=1 | grep -e "\.[ch]:[0-9]*:+" -e "\.cpp:[0-9]*:+" -e "\.cc:[0-9]*:+" | cut -d+ -f1 | rev | cut -c2- | rev > $TMP_DIR/BBtargets.txt
-5B) Alternatively, You can provide targets via static analysis tool.
+```
+* Solutution 2: Alternatively, You can provide targets via static analysis tool.
 ```bash
 cp $AFLGO/scripts/staticAnalysis.sh $SUBJECT
 mkdir result
