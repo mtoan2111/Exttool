@@ -138,6 +138,18 @@ pushd $SUBJECT
 popd
 cat $TMP_DIR/commit.diff |  $TMP_DIR/showlinenum.awk show_header=0 path=1 | grep -e "\.[ch]:[0-9]*:+" -e "\.cpp:[0-9]*:+" -e "\.cc:[0-9]*:+" | cut -d+ -f1 | rev | cut -c2- | rev > $TMP_DIR/BBtargets.txt
 
+#Alternatively, You can provide targets via static analysis tool.
+cp $AFLGO/scripts/staticAnalysis.sh $SUBJECT
+mkdir result
+export RLT=$PWD/result
+pushd $SUBJECT
+  ./autogen.sh
+  ./configure --disable-shared
+  make -j$(nproc) clean
+  ./staticAnalysis.sh -o $RLT make -j$(nproc) all
+popd
+$AFLGO/scripts $RLT
+
 # Print extracted targets. 
 echo "Targets:"
 cat $TMP_DIR/BBtargets.txt
@@ -204,11 +216,7 @@ cd llvm_mode/lowfat
 cd ..
 make clean all
 cd ~
-export CC=$AFLGO/afl-clang-fast
-export CXX=$AFLGO/afl-clang-fast++
-export CFLAGS="$COPY_CFLAGS -distance=$TMP_DIR/distance.cfg.txt"
-export CXXFLAGS="$COPY_CXXFLAGS -distance=$TMP_DIR/distance.cfg.txt"
-
+source $AFLGO/scripts/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
   make clean
