@@ -100,6 +100,7 @@ sudo pip3 install --upgrade pip
 sudo pip3 install networkx
 sudo pip3 install pydot
 sudo pip3 install pydotplus
+sudo pip install bs4
 ```
 3) Compile AFLGo fuzzer and LLVM-instrumentation pass
 ```bash
@@ -151,7 +152,7 @@ pushd $SUBJECT
   make -j$(nproc) clean
   ./staticAnalysis.sh -o $RLT make -j$(nproc) all
 popd
-$AFLGO/scripts $RLT
+$AFLGO/scripts/gen_BBtargets.py $RLT
 
 # Print extracted targets. 
 echo "Targets:"
@@ -210,15 +211,15 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Instrument subject (i.e., libxml2)
 ```bash
-unset AFLGO CC CXX
+unset AFLGO
 export AFLGO=/path/to/integrated/tool
-cd $AFLGO
-make clean all
-cd llvm_mode/lowfat
-./install
-cd ..
-make clean all
-cd ~
+pushd $AFLGO
+  make clean all
+  cd llvm_mode/lowfat
+  ./install
+  cd ..
+  make clean all
+popd
 source $AFLGO/scripts/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
