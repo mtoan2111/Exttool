@@ -121,13 +121,14 @@ popd
 git clone git://git.gnome.org/libxml2
 export SUBJECT=$PWD/libxml2
 ```
-5) Set targets (e.g., changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>). Writes BBtargets.txt.
+5) Set targets 
 ```bash
 # Setup directory containing all temporary files
 mkdir temp
 export TMP_DIR=$PWD/temp
 ```
-* Solution 1:
+Writes BBtargets.txt
+* Solution 1: changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>).
 ```bash
 # Download commit-analysis tool
 wget https://raw.githubusercontent.com/jay/showlinenum/develop/showlinenum.awk
@@ -153,24 +154,17 @@ pushd $SUBJECT
   ./staticAnalysis.sh -o $RLT make -j$(nproc) all
 popd
 $AFLGO/scripts/gen_BBtargets.py $RLT
-
-# Print extracted targets. 
+```
+* Print extracted targets. 
+```
 echo "Targets:"
 cat $TMP_DIR/BBtargets.txt
 ```
 6) **Note**: If there are no targets, there is nothing to instrument!
 7) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
-# Set aflgo-instrumenter
-export CC=$AFLGO/afl-clang-fast
-export CXX=$AFLGO/afl-clang-fast++
-
-# Set aflgo-instrumentation flags
-export COPY_CFLAGS=$CFLAGS
-export COPY_CXXFLAGS=$CXXFLAGS
-export ADDITIONAL="-targets=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
-export CFLAGS="$CFLAGS $ADDITIONAL"
-export CXXFLAGS="$CXXFLAGS $ADDITIONAL"
+# Set aflgo-env
+source $AFLGO/scripts/AFLGO_env.sh
 
 # Build libxml2 (in order to generate CG and CFGs).
 # Meanwhile go have a coffee ☕️
