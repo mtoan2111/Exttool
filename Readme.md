@@ -127,8 +127,7 @@ export SUBJECT=$PWD/libxml2
 mkdir temp
 export TMP_DIR=$PWD/temp
 ```
-Writes BBtargets.txt
-* Solution 1: changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>).
+* Writes BBtargets.txt (e.g. changed statements in commit <a href="https://git.gnome.org/browse/libxml2/commit/?id=ef709ce2" target="_blank">ef709ce2</a>).
 ```bash
 # Download commit-analysis tool
 wget https://raw.githubusercontent.com/jay/showlinenum/develop/showlinenum.awk
@@ -142,7 +141,7 @@ pushd $SUBJECT
 popd
 cat $TMP_DIR/commit.diff |  $TMP_DIR/showlinenum.awk show_header=0 path=1 | grep -e "\.[ch]:[0-9]*:+" -e "\.cpp:[0-9]*:+" -e "\.cc:[0-9]*:+" | cut -d+ -f1 | rev | cut -c2- | rev > $TMP_DIR/BBtargets.txt
 ```
-* Solutution 2: Alternatively, You can provide targets via static analysis tool.
+* Alternatively, the targets can be obtained via static analysis tool.
 ```bash
 cp $AFLGO/scripts/staticAnalysis.sh $SUBJECT
 mkdir result
