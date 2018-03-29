@@ -90,6 +90,7 @@ sudo cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 2) Install other prerequisite
 ```bash
 sudo apt-get update
+sudo apt-get install python-dev
 sudo apt-get install python3
 sudo apt-get install python3-dev
 sudo apt-get install python3-pip
