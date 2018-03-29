@@ -97,11 +97,11 @@ sudo apt-get install python3-pip
 sudo apt-get install autoconf
 sudo apt-get install automake
 sudo apt-get install libtool-bin
+sudo apt-get install python-bs4
 sudo pip3 install --upgrade pip
 sudo pip3 install networkx
 sudo pip3 install pydot
 sudo pip3 install pydotplus
-sudo pip install bs4
 ```
 3) Compile AFLGo fuzzer and LLVM-instrumentation pass
 ```bash
