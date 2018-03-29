@@ -108,6 +108,8 @@ sudo pip3 install pydotplus
 # Checkout source code
 git clone https://github.com/aflgo/aflgo.git
 export AFLGO=$PWD/aflgo
+git clone https://github.com/mtoan2111/Exttool.git $AFLGO/scripts
+export EXT_TOOL=$AFLGO/scripts/Exttool
 
 # Compile source code
 pushd $AFLGO
@@ -144,7 +146,7 @@ cat $TMP_DIR/commit.diff |  $TMP_DIR/showlinenum.awk show_header=0 path=1 | grep
 ```
 * Alternatively, the targets can be obtained via static analysis tool.
 ```bash
-cp $AFLGO/scripts/staticAnalysis.sh $SUBJECT
+cp $EXT_TOOL/staticAnalysis.sh $SUBJECT
 mkdir result
 export RLT=$PWD/result
 pushd $SUBJECT
@@ -153,7 +155,7 @@ pushd $SUBJECT
   make -j$(nproc) clean
   ./staticAnalysis.sh -o $RLT make -j$(nproc) all
 popd
-$AFLGO/scripts/gen_BBtargets.py $RLT
+$EXT_TOOL/gen_BBtargets.py $RLT
 ```
 * Print extracted targets. 
 ```
@@ -164,7 +166,7 @@ cat $TMP_DIR/BBtargets.txt
 7) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
 # Set aflgo-env
-source $AFLGO/scripts/AFLGO_env.sh
+source $EXT_TOOL/AFLGO_env.sh
 
 # Build libxml2 (in order to generate CG and CFGs).
 # Meanwhile go have a coffee ☕️
@@ -207,6 +209,8 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 ```bash
 unset AFLGO
 export AFLGO=/path/to/integrated/tool
+git clone https://github.com/mtoan2111/Exttool.git $AFLGO/scripts
+export EXT_TOOL=$AFLGO/scripts/Exttool
 pushd $AFLGO
   make clean all
   cd llvm_mode/lowfat
@@ -214,7 +218,7 @@ pushd $AFLGO
   cd ..
   make clean all
 popd
-source $AFLGO/scripts/SAFLGO_env.sh
+source $EXT_TOOL/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
   make clean
