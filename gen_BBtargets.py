@@ -19,7 +19,7 @@ class HtmlParse:
     self.Output = Output
     self.Lst_Dangerous = deepcopy(ListDangerous)
     with open(self.SoureFile) as fp:
-      self.Soup = BeautifulSoup(fp)
+      self.Soup = BeautifulSoup(fp,"lxml")
 
   def analyzingSoureFile(self):
     if len(self.Lst_Dangerous) > 0:
