@@ -172,10 +172,9 @@ source $EXT_TOOL/AFLGO_env.sh
 # Meanwhile go have a coffee ☕️
 export LDFLAGS=-lpthread
 pushd $SUBJECT
-  ./autogen.sh
+   make -j$(nproc) clean
   ./configure --disable-shared
-  make -j$(nproc) clean
-  make -j$(nproc) all
+   make -j$(nproc) all
 popd
 # * If the linker (CCLD) complains that you should run ranlib, make
 #   sure that libLTO.so and LLVMgold.so (from building LLVM with Gold)
