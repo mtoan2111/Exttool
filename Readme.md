@@ -206,12 +206,13 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Instrument subject (i.e., libxml2)
 ```bash
-unset AFLGO
+unset AFLGO CC CXX CFLAGS CXXFLAGS
 export AFLGO=/path/to/integrated/tool
 pushd $AFLGO
   make clean all
   cd llvm_mode/lowfat
-  ./install
+  chmod 755 install.sh
+  ./install.sh
   cd ..
   make clean all
 popd
@@ -225,17 +226,11 @@ popd
 ```
 
 # How to fuzz the instrumented binary
-* We set the exponential annealing-based power schedule (-z exp).
-* We set the time-to-exploitation to 45min (-c 45m), assuming the fuzzer is run for about an hour.
 ```bash
 # Construct seed corpus
 mkdir in
 cp $SUBJECT/test/dtd* in
 cp $SUBJECT/test/dtds/* in
 
-$AFLGO/afl-fuzz -S ef709ce2 -z exp -c 45m -i in -o out $SUBJECT/xmllint --valid --recover @@
-```
-* **Tipp**: Concurrently fuzz the most recent version as master with classical AFL :)
-```bash
-$AFL/afl-fuzz -M master -i in -o out $MASTER/xmllint --valid --recover @@
+$AFLGO/afl-fuzz -i in -o out -m none -d $SUBJECT/xmllint --valid --recover @@
 ```
