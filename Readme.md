@@ -108,7 +108,7 @@ sudo pip3 install pydotplus
 # Checkout source code
 git clone https://github.com/aflgo/aflgo.git
 export AFLGO=$PWD/aflgo
-git clone https://github.com/mtoan2111/Exttool.git $AFLGO/scripts
+git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$AFLGO/scripts/Exttool
 
 # Compile source code
@@ -209,8 +209,6 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 ```bash
 unset AFLGO
 export AFLGO=/path/to/integrated/tool
-git clone https://github.com/mtoan2111/Exttool.git $AFLGO/scripts
-export EXT_TOOL=$AFLGO/scripts/Exttool
 pushd $AFLGO
   make clean all
   cd llvm_mode/lowfat
