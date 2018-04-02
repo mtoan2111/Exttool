@@ -109,7 +109,7 @@ sudo pip3 install pydotplus
 git clone https://github.com/aflgo/aflgo.git
 export AFLGO=$PWD/aflgo
 git clone https://github.com/mtoan2111/Exttool.git
-export EXT_TOOL=$AFLGO/scripts/Exttool
+export EXT_TOOL=$PWD/Exttool
 
 # Compile source code
 pushd $AFLGO
