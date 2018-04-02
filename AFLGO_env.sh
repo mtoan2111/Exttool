@@ -80,7 +80,7 @@ then
   if ! [ $((targets_size)) -lt 5 ]
   then
     echo -e "${YELLOW}$0: ${OFF}Setting 'CFLAGS' env"
-    export CFLAGS="$COPY_CFLAGS -target=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
+    export CFLAGS="$COPY_CFLAGS -targets=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
     if [[ ! -z $CFLAGS ]]
     then
       echo -e "${YELLOW}$0: ${OFF}${GREEN}--> CFLAGS is set!${OFF}"
@@ -90,7 +90,7 @@ then
       return 0
     fi
     echo -e "${YELLOW}$0: ${OFF}Setting 'CXXFLAGS' env"
-    export CXXFLAGS="$COPY_CFLAGS -target=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
+    export CXXFLAGS="$COPY_CFLAGS -targets=$TMP_DIR/BBtargets.txt -outdir=$TMP_DIR -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps"
     if [[ ! -z $CXXFLAGS ]]
     then
       echo -e "${YELLOW}$0: ${OFF}${GREEN}--> CXXFLAGS is set!${OFF}"
