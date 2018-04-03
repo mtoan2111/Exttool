@@ -98,6 +98,7 @@ sudo apt-get install autoconf
 sudo apt-get install automake
 sudo apt-get install libtool-bin
 sudo apt-get install python-bs4
+sudo apt-get install libclang-4.0-dev
 sudo pip3 install --upgrade pip
 sudo pip3 install networkx
 sudo pip3 install pydot
@@ -206,12 +207,13 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Instrument subject (i.e., libxml2)
 ```bash
-unset AFLGO
+unset AFLGO CC CXX CFLAGS CXXFLAGS
 export AFLGO=/path/to/integrated/tool
 pushd $AFLGO
   make clean all
   cd llvm_mode/lowfat
-  ./install
+  chmod 755 install.sh
+  ./install.sh
   cd ..
   make clean all
 popd
