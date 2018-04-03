@@ -227,17 +227,11 @@ popd
 ```
 
 # How to fuzz the instrumented binary
-* We set the exponential annealing-based power schedule (-z exp).
-* We set the time-to-exploitation to 45min (-c 45m), assuming the fuzzer is run for about an hour.
 ```bash
 # Construct seed corpus
 mkdir in
 cp $SUBJECT/test/dtd* in
 cp $SUBJECT/test/dtds/* in
 
-$AFLGO/afl-fuzz -S ef709ce2 -z exp -c 45m -i in -o out $SUBJECT/xmllint --valid --recover @@
-```
-* **Tipp**: Concurrently fuzz the most recent version as master with classical AFL :)
-```bash
-$AFL/afl-fuzz -M master -i in -o out $MASTER/xmllint --valid --recover @@
+$AFLGO/afl-fuzz -i in -o out -m none -d $SUBJECT/xmllint --valid --recover @@
 ```
