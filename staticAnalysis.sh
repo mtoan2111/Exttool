@@ -30,6 +30,8 @@ then
   else
     checker_path=$clang
   fi
+else
+  exit 0
 fi
 checker=(
  #"alpha.clone.CloneChecker"       #Reports similar pieces of code.
