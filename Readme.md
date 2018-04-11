@@ -172,10 +172,11 @@ popd
 #
 # If you don't declare output directory, /tmp is output directory by default 
 # We defined all the checkers including the description of each checker in the staticAnalysis.sh file
-# Thus, You can enable/disable any checkers as you want by open staticAnalysis.sh file and comment/uncomment defined checkers 
+# Thus, You can enable/disable any checkers as you want by open staticAnalysis.sh file 
+# and comment/uncomment defined checkers 
 
 
-# After the process above is done, you can use gen_BBtargets.py script to extract BBtargets to produce for AFLGo as follow:
+# After the process above is done, you can use gen_BBtargets.py script to extract BBtargets
 #
 # $EXT_TOOL/gen_BBtargets.py <out_dir>
 #    - <out_dir> is output directory of static analysis tool
