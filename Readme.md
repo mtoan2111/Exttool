@@ -87,7 +87,8 @@ sudo cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 
 ```
 
-2) Install other prerequisite. In this tutor, we use <a href="http://xmlsoft.org/" target="_blank">libxml2</a> for demo. Thus, some packages are used to use our tool and another packages are used to compile subject. 
+2) Install other prerequisite. In this tutor, we use <a href="http://xmlsoft.org/" target="_blank">libxml2</a> for demo. Thus, some packages are used for our tool and another packages are used to compile subject. 
+# Note: some packages can be different if you use other subject
 ```bash
 sudo apt-get update
 sudo apt-get install python-dev
@@ -109,7 +110,7 @@ sudo pip3 install pydotplus
 # Checkout source code
 git clone https://github.com/aflgo/aflgo.git
 export AFLGO=$PWD/aflgo
-# Checkout extended script, this one will help you to use out tool easier
+# Checkout extended script, this one will help you to use our tool easier
 git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 
@@ -120,13 +121,13 @@ pushd $AFLGO
   make clean all
 popd
 ```
-4) The second,you need to download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
+4) After, you need to download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
 ```bash
 # Clone subject repository
 git clone git://git.gnome.org/libxml2
 export SUBJECT=$PWD/libxml2
 ```
-5) The third, you need to create a temporary folder to contain all temporary files while using our tool 
+5) You need to create a temporary folder. This folder will contain all temporary files while using our tool 
 ```bash
 # Setup directory containing all temporary files
 mkdir temp
@@ -159,21 +160,28 @@ pushd $SUBJECT
   ./configure --disable-shared
   make -j$(nproc) clean
   ./staticAnalysis.sh -o $RLT make -j$(nproc) all
-# Note: to use static analysis script, you can follow:
-# ./staticAnalysis.sh -o <out_dir> <command to complie the subject>
-# e.g. ./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
+popd
+# Note: to use static analysis script, you can follow the command line:
+#
+# ./staticAnalysis.sh -o <out_dir> <command_line_to_complie_the_subject>
+#
+# e.g: ./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
 # As you can see
-#    - my_output_folder is output directory
-#    - gcc -g -O3 -o subject subject.c is command line to compile the subject
+#    - 'my_output_folder' is output directory
+#    - 'gcc -g -O3 -o subject subject.c' is command line to compile the subject
+#
 # If you don't declare output directory, /tmp is output directory by default 
-# By default, we only use three checker for static analysis tool.
 # We defined all the checkers including the description of each checker in the staticAnalysis.sh file
 # Thus, You can enable/disable any checkers as you want by open staticAnalysis.sh file and comment/uncomment defined checkers 
-popd
+
+
 # After the process above is done, you can use gen_BBtargets.py script to extract BBtargets to produce for AFLGo as follow:
+#
 # $EXT_TOOL/gen_BBtargets.py <out_dir>
-# <out_dir> is output directory of static analysis tool
-# If TMP_FILE is empty, output file will be generated into /tmp directory
+#    - <out_dir> is output directory of static analysis tool
+#
+# BBtargets will be auto-generated into temporary folder 
+# If TMP_FILE is empty, output file will be generated into /tmp directory by default
 $EXT_TOOL/gen_BBtargets.py $RLT
 ```
 * Print extracted targets. 
@@ -226,7 +234,7 @@ tail -n5 $TMP_DIR/distance.cfg.txt
 9) Instrument subject (i.e., libxml2)
 ```bash
 unset AFLGO CC CXX CFLAGS CXXFLAGS
-# redefinding AFLGO path
+# re-define AFLGO path
 export AFLGO=/path/to/integrated/tool
 # Compile integrated tool
 pushd $AFLGO
@@ -237,7 +245,7 @@ pushd $AFLGO
   cd ..
   make clean all
 popd
-# Set integrated tool environment via out script
+# Set integrated tool environment via our script
 source $EXT_TOOL/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
