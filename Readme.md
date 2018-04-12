@@ -1,6 +1,5 @@
 # Hardening plus Driected Fuzzing
-=============================================================================
-# Introduction
+## Introduction
 ### AFLGo: Directed Greybox Fuzzing
 AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
 Given a set of target locations (e.g., `folder/file.c:582`), AFLGo generates inputs specifically with the objective to exercise these target locations.
@@ -38,7 +37,7 @@ Our tool consists four paths
   - Binary Instrumentor: Based on targets and information from part 2, this part will instrument the binary file
   - Fuzzer: The last part will generate the test suite to direct to the targets
 
-# Installation
+## Installation
 ### Before using our tool, you need to install required evironment(s) and package(s).
 1) Install LLVM with Gold-plugin
 ```bash
@@ -125,6 +124,7 @@ sudo pip3 install networkx
 sudo pip3 install pydot
 sudo pip3 install pydotplus
 ```
+## Case study
 ### After all prerequisites are installed successful, you can start now.
 1) Checkout source code of our tool and compile it to use
 ```bash
