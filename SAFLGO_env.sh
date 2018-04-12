@@ -32,6 +32,7 @@ then
   else
     echo -e "${YELLOW}$0: ${OFF}${RED}Can't find${OFF}${YELLOW} afl-clang-fast${OFF}${RED} in the${OFF}${YELLOW} $AFLGO${OFF}${RED} folder"
     echo -e "${YELLOW}$0: ${OFF}${RED}Please rebuild and try again!${OFF}"
+    unset CC
     return 0
   fi
 else
@@ -49,6 +50,7 @@ then
   else 
     echo -e "${YELLOW}$0: ${OFF}${RED}Can't find${OFF}${YELLOW} afl-clang-fast++${OFF}${RED} in the${OFF}${YELLOW} $AFLGO${OFF}${RED} folder"
     echo -e "${YELLOW}$0: ${OFF}${RED}Please try again!${OFF}"
+    unset CC CXX
     return 0
   fi
 else
@@ -67,10 +69,12 @@ then
     echo -e "${YELLOW}$0: ${OFF}${GREEN}--> Temporary is set${OFF}"
   else
     echo -e "${YELLOW}$0: ${OFF}${RED}Temporary folder isn't exist. Please try again${OFF}"
+    unset CC CXX
     return 0
   fi
 else
   echo -e "${YELLOW}$0: ${OFF}${RED}Please set 'temporary directory' first, for example:${OFF}${YELLOW} export TMP_DIR=\"/path/to/temporary/folder\"${OFF}"
+  unset CC CXX
   return 0
 fi
 # Checking whether distance.cfg.txt file is exist/empty
