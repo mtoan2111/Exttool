@@ -235,6 +235,13 @@ head -n5 $TMP_DIR/distance.cfg.txt
 echo "..."
 tail -n5 $TMP_DIR/distance.cfg.txt
 ```
+**Note**: to use genDistance script, you can execute the command line as follow:
+```bash
+./genDistance.sh <SUB_DIR> <TMP_DIR> <BIN_FILE>
+   - <SUB_DIR>: subject directory
+   - <TMP_DIR>: temporary directory
+   - <BIN_FILE>: binary file name 
+```
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
 9) Compile Integrated tool
 ```bash
