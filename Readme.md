@@ -1,5 +1,4 @@
 # AFLGo: Directed Greybox Fuzzing
-<a href="https://comp.nus.edu.sg/~mboehme/paper/CCS17.pdf" target="_blank"><img src="https://comp.nus.edu.sg/~mboehme/paper/CCS17.png" align="right" width="250"></a>
 AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
 Given a set of target locations (e.g., `folder/file.c:582`), AFLGo generates inputs specifically with the objective to exercise these target locations.
 
@@ -29,11 +28,6 @@ Here is the architecture of this tool
 <p align="center">
   <img src="Architecture.png" width="100%"/>
 </p>
-
-# Environment Variables
-* **AFLGO_INST_RATIO** -- The proportion of basic blocks instrumented with distance values (default: 100).
-* **AFLGO_SELECTIVE** -- Add AFL-trampoline only to basic blocks with distance values? (default: off).
-* **AFLGO_PROFILING_FILE** -- When CFG-tracing is enabled, the data will be stored here.
 
 # How to instrument a Binary with Hardening plus Directed Fuzzing tool
 1) Install LLVM with Gold-plugin
