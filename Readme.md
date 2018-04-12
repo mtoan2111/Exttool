@@ -168,13 +168,13 @@ Note 1: to use static analysis script, you can follow the command line:
 ```
 For example,
 ```
-e.g: ./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
-  - ```'my_output_folder'``` is output directory.
-  - ```'gcc -g -O3 -o subject subject.c'``` is command line to compile the subject.
+./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
+  - 'my_output_folder': output directory.
+  - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
 If you don't declare output directory, ```/tmp``` is output directory by default.
-We defined all the checkers including the description of each checker in the ```[staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41)``` file.
-Thus, You can ```enable/disable``` any checkers as you want by open ```[staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41)``` file.
+We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
+Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 and ```comment/uncomment``` defined checkers 
 
 
