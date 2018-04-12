@@ -88,6 +88,7 @@ sudo cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 ```
 
 2) Install other prerequisite.
+
 **Note**: some packages can be different if you use other subject. You need install all prerequisite package(s) to compile your subject
 ```bash
 sudo apt-get update
