@@ -29,6 +29,12 @@ Here is the architecture of this tool
   <img src="Architecture.png" width="100%"/>
 </p>
 
+Our tool consists four paths
+  - Target provider: This part will produce the targets by using static analysis technical
+  - Graph Extractor: This part will extract CG(s) and CFG(s) of subject
+  - Binary Instrumentor: Once two part above succeed, this part will instrument binary file
+  - Fuzzer: The last part will generate the test suite to direct to the targets
+
 # Installation
 ### Before using our tool, you need to install required evironment(s) and package(s).
 1) Install LLVM with Gold-plugin
