@@ -32,7 +32,7 @@ Here is the architecture of this tool
 Our tool consists four paths
   - Target provider: This part will produce the targets by using static analysis technical
   - Graph Extractor: This part will extract CG(s) and CFG(s) of subject
-  - Binary Instrumentor: Once two part above succeed, this part will instrument binary file
+  - Binary Instrumentor: Based on targets and information from part 2, this part will instrument the binary file
   - Fuzzer: The last part will generate the test suite to direct to the targets
 
 # Installation
