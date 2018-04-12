@@ -146,6 +146,9 @@ pushd $SUBJECT
   git diff -U0 HEAD^ HEAD > $TMP_DIR/commit.diff
 popd
 cat $TMP_DIR/commit.diff |  $TMP_DIR/showlinenum.awk show_header=0 path=1 | grep -e "\.[ch]:[0-9]*:+" -e "\.cpp:[0-9]*:+" -e "\.cc:[0-9]*:+" | cut -d+ -f1 | rev | cut -c2- | rev > $TMP_DIR/BBtargets.txt
+# Print extracted targets. 
+echo "Targets:"
+cat $TMP_DIR/BBtargets.txt
 ```
 * Alternatively, the targets can be obtained via static analysis tool.
 ```bash
@@ -163,9 +166,12 @@ pushd $SUBJECT
 popd
 # After the process above is done, you can use gen_BBtargets.py script to extract BBtargets
 $EXT_TOOL/gen_BBtargets.py $RLT
+# Print extracted targets. 
+echo "Targets:"
+cat $TMP_DIR/BBtargets.txt
 ```
 
-Note 1: to use static analysis script, you must copy [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) script into your ```SUBJECT``` folder and execute the command line as follow:
+**Note 1**: to use static analysis script, you must copy [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) script into your ```SUBJECT``` folder and execute the command line as follow:
 ```
  ./staticAnalysis.sh -o <out_dir> <command_line_to_complie_the_subject>
 ```
@@ -176,12 +182,10 @@ For example,
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
 - If you don't declare output directory, ```/tmp``` is output directory by default.
-
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
-
 - Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` defined checkers 
 
-Note 2: to use gen_BBtargets script, you can follow the command line
+**Note 2**: to use gen_BBtargets script, you can follow the command line
 ```
  $EXT_TOOL/gen_BBtargets.py <out_dir>
    - <out_dir> is output directory of static analysis tool
@@ -189,11 +193,6 @@ Note 2: to use gen_BBtargets script, you can follow the command line
 BBtargets will be auto-generated into temporary folder.
 If TMP_FILE is empty, output file will be generated into /tmp directory by default.
 
-* Print extracted targets. 
-```
-echo "Targets:"
-cat $TMP_DIR/BBtargets.txt
-```
 6) **Note**: If there are no targets, there is nothing to instrument!
 7) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
