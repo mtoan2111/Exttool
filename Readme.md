@@ -175,7 +175,7 @@ cat $TMP_DIR/BBtargets.txt
 **Note 1**: to use static analysis script, you must copy [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) script into your ```SUBJECT``` folder and execute the command line as follow:
 ```bash
  ./staticAnalysis.sh -o <out_dir> <command>
-    - <out_dir>: output directory of static analysis tool above
+    - <out_dir>: output directory of static analysis tool
     - <command>: the command line to compile your subject
 ```
 For example,
