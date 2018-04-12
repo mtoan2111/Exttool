@@ -1,4 +1,5 @@
-# AFLGo: Directed Greybox Fuzzing
+# Introduction
+### AFLGo: Directed Greybox Fuzzing
 AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
 Given a set of target locations (e.g., `folder/file.c:582`), AFLGo generates inputs specifically with the objective to exercise these target locations.
 
@@ -10,7 +11,7 @@ Unlike AFL, AFLGo spends most of its time budget on reaching specific target loc
 
 You can find out further information about AFLGo at [here](https://github.com/aflgo/aflgo) 
 
-# Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
+### Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
 LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
 
 The basic idea of *low-fat pointers* is to encode bounds information (size and base) directly into the native bit representation of a pointer itself. This bounds information can then retrieved at runtime, and be checked whenever the pointer is accessed, thereby preventing OOB-errors.  Low-fat pointers have several advantages compared to existing bounds checking systems, namely:
@@ -20,7 +21,7 @@ The basic idea of *low-fat pointers* is to encode bounds information (size and b
 * *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
 
 You can find out further information about Lowfat at [here](https://github.com/GJDuck/LowFat)
-# Hardening plus Directed Fuzzing
+### Hardening plus Directed Fuzzing
 In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo
 
 Here is the architecture of this tool
@@ -204,6 +205,11 @@ For example,
 - If you don't declare output directory, ```/tmp``` is output directory by default.
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 - Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` defined checkers 
+<p align="center">
+  <img src="Checkers.png" width="100%"/>
+</p>
+
+
 
 **Note 2**: to use gen_BBtargets script, you can follow the command line
 ```bash
