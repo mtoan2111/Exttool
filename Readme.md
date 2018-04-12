@@ -258,32 +258,21 @@ popd
  
   - `-lowfat-no-check-reads`: Do not OOB-check reads
   - `-lowfat-no-check-writes`: Do not OOB-check writes
-  - `-lowfat-no-check-escapes`: Do not OOB-check pointer escapes
-  - (of any kind)
+  - `-lowfat-no-check-escapes`: Do not OOB-check pointer escape (of any kind)
   - `-lowfat-no-check-memset`: Do not OOB-check memset
   - `-lowfat-no-check-memcpy`: Do not OOB-check memcpy or memmove
   - `-lowfat-no-check-escape-call`: Do not OOB-check pointer call escapes
   - `-lowfat-no-check-escape-return`: Do not OOB-check pointer return escapes
   - `-lowfat-no-check-escape-store`: Do not OOB-check pointer store escapes
-  - `-lowfat-no-check-escape-ptr2int`: Do not OOB-check pointer
-  -  pointer-to-int escapes
-  - `-lowfat-no-check-escape-insert`: Do not OOB-check pointer vector insert
-  - escapes
-  - `-lowfat-no-check-fields`: Do not OOB-check field access (reduces the
-  - number of checks)
-  - `-lowfat-check-whole-access`: OOB-check the whole pointer access
-  - `ptr..ptr+sizeof(*ptr)` as opposed to just `ptr`
-  - (increases the number and cost of checks).
-  - `-lowfat-no-replace-malloc`: Do not replace malloc() with LowFat
-  - `malloc()` (disables heap protection)
-  - `-lowfat-no-replace-alloca`: Do not replace stack allocation (`alloca`)
-  -  with LowFat stack allocation (disables stack protection)
-  - `-lowfat-no-replace-globals`: Do not replace globals with LowFat globals
-  -  (disables global variable protection)
-  - `-lowfat-no-check-blacklist blacklist.txt`: Do not OOB-check the
-  - functions/modules specified in `blacklist.txt`
-  - `-lowfat-no-abort`: Do not abort the program if an OOB memory error
-  -  occurs
+  - `-lowfat-no-check-escape-ptr2int`: Do not OOB-check pointer pointer-to-int escapes
+  - `-lowfat-no-check-escape-insert`: Do not OOB-check pointer vector insert escapes
+  - `-lowfat-no-check-fields`: Do not OOB-check field access (reduces the number of checks)
+  - `-lowfat-check-whole-access`: OOB-check the whole pointer access `ptr..ptr+sizeof(*ptr)` as opposed to just `ptr` (increases the number and cost of checks).
+  - `-lowfat-no-replace-malloc`: Do not replace malloc() with LowFat `malloc()` (disables heap protection)
+  - `-lowfat-no-replace-alloca`: Do not replace stack allocation (`alloca`) with LowFat stack allocation (disables stack protection)
+  - `-lowfat-no-replace-globals`: Do not replace globals with LowFat globals (disables global variable protection)
+  - `-lowfat-no-check-blacklist blacklist.txt`: Do not OOB-check the functions/modules specified in `blacklist.txt`
+  - `-lowfat-no-abort`: Do not abort the program if an OOB memory error occurs
 
 ``` 
 # Set integrated tool environment via our script
