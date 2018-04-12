@@ -274,7 +274,7 @@ popd
   - `-lowfat-no-check-blacklist blacklist.txt`: Do not OOB-check the functions/modules specified in `blacklist.txt`
   - `-lowfat-no-abort`: Do not abort the program if an OOB memory error occurs
 
-``` 
+```bash 
 # Set integrated tool environment via our script
 source $EXT_TOOL/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
