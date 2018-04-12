@@ -11,7 +11,7 @@ Unlike AFL, AFLGo spends most of its time budget on reaching specific target loc
 
 AFLGo is based on <a href="http://lcamtuf.coredump.cx/afl/" target="_blank">AFL</a> from Michał Zaleski \<lcamtuf@coredump.cx\>.
 
-[https://github.com/GJDuck/LowFat](# Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers)
+[https://github.com/GJDuck/LowFat](#Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers)
 LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
 
 The basic idea of *low-fat pointers* is to encode bounds information (size and base) directly into the native bit representation of a pointer itself. This bounds information can then retrieved at runtime, and be checked whenever the pointer is accessed, thereby preventing OOB-errors.  Low-fat pointers have several advantages compared to existing bounds checking systems, namely:
