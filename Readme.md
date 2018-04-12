@@ -253,8 +253,7 @@ popd
 ```
 10) Instrument subject (i.e., libxml2)
 - Hardening tool supports several command line options that are listed below.
- Note that to pass an option to LowFat it must be preceded by `-mllvm` on the
- `clang` command-line, e.g. (`-mllvm -lowfat-no-check-reads`), etc.
+ Note that to pass an option to Hardening it must be preceded by `-mllvm` on the command-line, e.g. (`-mllvm -lowfat-no-check-reads`), etc.
  
   - `-lowfat-no-check-reads`: Do not OOB-check reads
   - `-lowfat-no-check-writes`: Do not OOB-check writes
