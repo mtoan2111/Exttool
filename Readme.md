@@ -1,3 +1,5 @@
+# Hardening plus Driected Fuzzing
+=============================================================================
 # Introduction
 ### AFLGo: Directed Greybox Fuzzing
 AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
