@@ -161,7 +161,10 @@ pushd $SUBJECT
   make -j$(nproc) clean
   ./staticAnalysis.sh -o $RLT make -j$(nproc) all
 popd
+# After the process above is done, you can use gen_BBtargets.py script to extract BBtargets
+$EXT_TOOL/gen_BBtargets.py $RLT
 ```
+
 Note 1: to use static analysis script, you can follow the command line:
 ```
  ./staticAnalysis.sh -o <out_dir> <command_line_to_complie_the_subject>
@@ -177,11 +180,6 @@ We defined all the checkers including the description of each checker in the [st
 Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 and ```comment/uncomment``` defined checkers 
 
-
-After the process above is done, you can use gen_BBtargets.py script to extract BBtargets
-```
-$EXT_TOOL/gen_BBtargets.py $RLT
-```
 Note 2: to use gen_BBtargets script, you can follow the command line
 ```
  $EXT_TOOL/gen_BBtargets.py <out_dir>
