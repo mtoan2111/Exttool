@@ -11,16 +11,24 @@ Unlike AFL, AFLGo spends most of its time budget on reaching specific target loc
 
 AFLGo is based on <a href="http://lcamtuf.coredump.cx/afl/" target="_blank">AFL</a> from Michał Zaleski \<lcamtuf@coredump.cx\>.
 
-# Integration into OSS-Fuzz
-The easiest way to use AFLGo is as patch testing tool in OSS-Fuzz. Here is our integration:
-* https://github.com/aflgo/oss-fuzz
+# (Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers)[https://github.com/GJDuck/LowFat]
+LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
+
+The basic idea of *low-fat pointers* is to encode bounds information (size and base) directly into the native bit representation of a pointer itself. This bounds information can then retrieved at runtime, and be checked whenever the pointer is accessed, thereby preventing OOB-errors.  Low-fat pointers have several advantages compared to existing bounds checking systems, namely:
+
+* *Memory Usage*: Since object bounds information is stored directly in pointers (and not is some other meta data region), the memory overheads of LowFat is very low.
+* *Compatibility*: Since low-fat pointers are also ordinary pointers, LowFat achieves high binary compatibility.
+* *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
+
+# Hardening plus Directed Fuzzing
+In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo
 
 # Environment Variables
 * **AFLGO_INST_RATIO** -- The proportion of basic blocks instrumented with distance values (default: 100).
 * **AFLGO_SELECTIVE** -- Add AFL-trampoline only to basic blocks with distance values? (default: off).
 * **AFLGO_PROFILING_FILE** -- When CFG-tracing is enabled, the data will be stored here.
 
-# How to instrument a Binary with AFLGo
+# How to instrument a Binary with Hardening plus Directed Fuzzing tool
 1) Install LLVM with Gold-plugin
 ```bash
 LLVM_DEP_PACKAGES="build-essential make cmake ninja-build git subversion python2.7 binutils-gold binutils-dev"
