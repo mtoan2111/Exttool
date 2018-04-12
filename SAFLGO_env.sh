@@ -81,7 +81,7 @@ then
   if ! [  $((distance_size)) -lt 5 -a $((target_size)) -lt 5 ]
   then
     echo -e "${YELLOW}$0: ${OFF}Setting 'CFLAGS' env"
-    export CFLAGS="$COPY_CFLAGS -distance=$TMP_DIR/distance.cfg.txt -mllvm -lowfat-selective=$TMP_DIR/BBtargets.txt -mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
+    export CFLAGS="$COPY_CFLAGS -distance=$TMP_DIR/distance.cfg.txt -mllvm -lowfat-selective=$TMP_DIR/BBtargets.txt $HARDENING"
     if [[ ! -z $CFLAGS ]]
     then
       echo -e "${YELLOW}$0: ${OFF}${GREEN}--> CFLAGS is set!${OFF}"
@@ -91,7 +91,7 @@ then
       return 0
     fi
     echo -e "${YELLOW}$0: ${OFF}Setting 'CXXFLAGS' env"
-    export CXXFLAGS="$COPY_CXXFLAGS -distance=$TMP_DIR/distance.cfg.txt -mllvm -lowfat-selective=$TMP_DIR/BBtargets.txt -mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
+    export CXXFLAGS="$COPY_CXXFLAGS -distance=$TMP_DIR/distance.cfg.txt -mllvm -lowfat-selective=$TMP_DIR/BBtargets.txt $HARDENING"
     if [[ ! -z $CXXFLAGS ]]
     then
       echo -e "${YELLOW}$0: ${OFF}${GREEN}--> CXXFLAGS is set!${OFF}"
