@@ -173,11 +173,11 @@ cat $TMP_DIR/BBtargets.txt
 ```
 
 **Note 1**: to use static analysis script, you must copy [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) script into your ```SUBJECT``` folder and execute the command line as follow:
-```
+```bash
  ./staticAnalysis.sh -o <out_dir> <command_line_to_complie_the_subject>
 ```
 For example,
-```
+```bash
 ./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
   - 'my_output_folder': output directory.
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
@@ -187,7 +187,7 @@ For example,
 - Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` defined checkers 
 
 **Note 2**: to use gen_BBtargets script, you can follow the command line
-```
+```bash
  $EXT_TOOL/gen_BBtargets.py <out_dir>
    - <out_dir>: output directory of static analysis tool
 ```
