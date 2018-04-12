@@ -8,7 +8,7 @@ Unlike AFL, AFLGo spends most of its time budget on reaching specific target loc
 * **information flow detection** by setting sensitive sources and sinks as targets. To expose data leakage vulnerabilities, a security researcher would like to generate executions that exercise sensitive sources containing private information and sensitive sinks where data becomes visible to the outside world. A directed fuzzer can be used to generate such executions efficiently.
 * **crash reproduction**  by setting method calls in the stack-trace as targets. When in-field crashes are reported, only the stack-trace and some environmental parameters are sent to the in-house development team. To preserve the user's privacy, the specific crashing input is often not available. AFLGo could help the in-house team to swiftly reproduce these crashes.
 
-You can see further information about AFLGo at [here](https://github.com/aflgo/aflgo) from Marcel Böhme \<marcel.boehme@acm.org\> 
+You can find out further information about AFLGo at [here](https://github.com/aflgo/aflgo) 
 
 # Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
 LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
@@ -19,7 +19,7 @@ The basic idea of *low-fat pointers* is to encode bounds information (size and b
 * *Compatibility*: Since low-fat pointers are also ordinary pointers, LowFat achieves high binary compatibility.
 * *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
 
-You can see further information about Lowfat at [here](https://github.com/GJDuck/LowFat) from GREGORY J. DUCK \<gregory@comp.nus.edu.sg\>
+You can find out further information about Lowfat at [here](https://github.com/GJDuck/LowFat)
 # Hardening plus Directed Fuzzing
 In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo
 
@@ -29,7 +29,8 @@ Here is the architecture of this tool
   <img src="Architecture.png" width="100%"/>
 </p>
 
-# How to instrument a Binary with Hardening plus Directed Fuzzing tool
+# Installation
+### Before using our tool, you need to install required evironment(s) and package(s).
 1) Install LLVM with Gold-plugin
 ```bash
 LLVM_DEP_PACKAGES="build-essential make cmake ninja-build git subversion python2.7 binutils-gold binutils-dev"
@@ -115,7 +116,8 @@ sudo pip3 install networkx
 sudo pip3 install pydot
 sudo pip3 install pydotplus
 ```
-3) Checkout source code of our tool and compile it to use
+### After all prerequisites are installed successful, you can start now.
+1) Checkout source code of our tool and compile it to use
 ```bash
 # Checkout source code
 git clone https://github.com/aflgo/aflgo.git
@@ -131,13 +133,13 @@ pushd $AFLGO
   make clean all
 popd
 ```
-4) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
+2) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
 ```bash
 # Clone subject repository
 git clone git://git.gnome.org/libxml2
 export SUBJECT=$PWD/libxml2
 ```
-5) Create a temporary folder. This folder will contain all temporary file(s) while using our tool 
+3) Create a temporary folder. This folder will contain all temporary file(s) while using our tool 
 ```bash
 # Setup directory containing all temporary files
 mkdir temp
@@ -205,8 +207,8 @@ For example,
 - BBtargets will be auto-generated into temporary folder.
 - If ```TMP_FILE``` is empty (not set), output file will be generated into ```/tmp``` directory by default.
 
-6) **Note**: If there are no targets, there is nothing to instrument!
-7) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
+4) **Note**: If there are no targets, there is nothing to instrument!
+5) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
 # Set aflgo-env
 source $EXT_TOOL/AFLGO_env.sh
@@ -253,8 +255,8 @@ tail -n5 $TMP_DIR/distance.cfg.txt
    - <TMP_DIR>: temporary directory
    - <BIN_FILE>: binary file name 
 ```
-8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
-9) Compile Integrated tool
+6) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
+7) Compile Integrated tool
 ```bash
 unset AFLGO CC CXX CFLAGS CXXFLAGS
 # re-define AFLGO path
@@ -269,7 +271,7 @@ pushd $AFLGO
   make clean all
 popd
 ```
-10) Instrument subject (i.e., libxml2)
+8) Instrument subject (i.e., libxml2)
 - Hardening tool supports several command line options that are listed below.
  Note that to pass an option to Hardening it must be preceded by `-mllvm` on the command-line, e.g. (`-mllvm -lowfat-no-check-reads`), etc.
  
