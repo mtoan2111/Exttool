@@ -275,8 +275,8 @@ popd
   - `-lowfat-no-abort`: Do not abort the program if an OOB memory error occurs
 - You can pass these option(s) via ```HARDENING``` evironment variable
 ```bash 
-# Pass hardening option
-export HARDENING=-mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
+# Pass hardening option(s)
+export HARDENING="-mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
 #Set integrated tool environment via our script
 source $EXT_TOOL/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
