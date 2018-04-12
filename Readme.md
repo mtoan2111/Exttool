@@ -87,8 +87,8 @@ sudo cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 
 ```
 
-2) Install other prerequisite. In this tutor, we use <a href="http://xmlsoft.org/" target="_blank">libxml2</a> for demo. Thus, some packages are used for our tool and another packages are used to compile subject. 
-# Note: some packages can be different if you use other subject
+2) Install other prerequisite.
+**Note**: some packages can be different if you use other subject. You need install all prerequisite package(s) to compile your subject
 ```bash
 sudo apt-get update
 sudo apt-get install python-dev
@@ -190,8 +190,8 @@ For example,
  $EXT_TOOL/gen_BBtargets.py <out_dir>
    - <out_dir> is output directory of static analysis tool
 ```
-BBtargets will be auto-generated into temporary folder.
-If TMP_FILE is empty, output file will be generated into /tmp directory by default.
+- BBtargets will be auto-generated into temporary folder.
+- If ```TMP_FILE``` is empty (not set), output file will be generated into ```/tmp``` directory by default.
 
 6) **Note**: If there are no targets, there is nothing to instrument!
 7) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
