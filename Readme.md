@@ -89,7 +89,7 @@ sudo cp /usr/local/lib/LLVMgold.so /usr/lib/bfd-plugins
 
 2) Install other prerequisite.
 
-**Note**: some packages can be different if you use other subject. You need install all prerequisite package(s) to compile your subject
+**Note**: some packages can be different if you use other subject. You need to install all prerequisite package(s) to compile your subject successful
 ```bash
 sudo apt-get update
 sudo apt-get install python-dev
@@ -106,7 +106,7 @@ sudo pip3 install networkx
 sudo pip3 install pydot
 sudo pip3 install pydotplus
 ```
-3) First, you need to checkout source code of our tool and compile it to use
+3) Checkout source code of our tool and compile it to use
 ```bash
 # Checkout source code
 git clone https://github.com/aflgo/aflgo.git
@@ -122,13 +122,13 @@ pushd $AFLGO
   make clean all
 popd
 ```
-4) After, you need to download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
+4) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
 ```bash
 # Clone subject repository
 git clone git://git.gnome.org/libxml2
 export SUBJECT=$PWD/libxml2
 ```
-5) You need to create a temporary folder. This folder will contain all temporary files while using our tool 
+5) Create a temporary folder. This folder will contain all temporary file(s) while using our tool 
 ```bash
 # Setup directory containing all temporary files
 mkdir temp
@@ -189,7 +189,7 @@ For example,
 **Note 2**: to use gen_BBtargets script, you can follow the command line
 ```
  $EXT_TOOL/gen_BBtargets.py <out_dir>
-   - <out_dir> is output directory of static analysis tool
+   - <out_dir>: output directory of static analysis tool
 ```
 - BBtargets will be auto-generated into temporary folder.
 - If ```TMP_FILE``` is empty (not set), output file will be generated into ```/tmp``` directory by default.
@@ -236,7 +236,7 @@ echo "..."
 tail -n5 $TMP_DIR/distance.cfg.txt
 ```
 8) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
-9) Instrument subject (i.e., libxml2)
+9) Compile Integrated tool
 ```bash
 unset AFLGO CC CXX CFLAGS CXXFLAGS
 # re-define AFLGO path
@@ -250,6 +250,42 @@ pushd $AFLGO
   cd ..
   make clean all
 popd
+```
+10) Instrument subject (i.e., libxml2)
+- Hardening tool supports several command line options that are listed below.
+ Note that to pass an option to LowFat it must be preceded by `-mllvm` on the
+ `clang` command-line, e.g. (`-mllvm -lowfat-no-check-reads`), etc.
+ 
+ * `-lowfat-no-check-reads`: Do not OOB-check reads
+ * `-lowfat-no-check-writes`: Do not OOB-check writes
+ * `-lowfat-no-check-escapes`: Do not OOB-check pointer escapes
+   (of any kind)
+ * `-lowfat-no-check-memset`: Do not OOB-check memset
+ * `-lowfat-no-check-memcpy`: Do not OOB-check memcpy or memmove
+ * `-lowfat-no-check-escape-call`: Do not OOB-check pointer call escapes
+ * `-lowfat-no-check-escape-return`: Do not OOB-check pointer return escapes
+ * `-lowfat-no-check-escape-store`: Do not OOB-check pointer store escapes
+ * `-lowfat-no-check-escape-ptr2int`: Do not OOB-check pointer
+    pointer-to-int escapes
+ * `-lowfat-no-check-escape-insert`: Do not OOB-check pointer vector insert
+   escapes
+ * `-lowfat-no-check-fields`: Do not OOB-check field access (reduces the
+   number of checks)
+ * `-lowfat-check-whole-access`: OOB-check the whole pointer access
+   `ptr..ptr+sizeof(*ptr)` as opposed to just `ptr`
+   (increases the number and cost of checks).
+ * `-lowfat-no-replace-malloc`: Do not replace malloc() with LowFat
+   `malloc()` (disables heap protection)
+ * `-lowfat-no-replace-alloca`: Do not replace stack allocation (`alloca`)
+    with LowFat stack allocation (disables stack protection)
+ * `-lowfat-no-replace-globals`: Do not replace globals with LowFat globals
+    (disables global variable protection)
+ * `-lowfat-no-check-blacklist blacklist.txt`: Do not OOB-check the
+   functions/modules specified in `blacklist.txt`
+ * `-lowfat-no-abort`: Do not abort the program if an OOB memory error
+   occurs
+
+ 
 # Set integrated tool environment via our script
 source $EXT_TOOL/SAFLGO_env.sh
 # Clean and build subject with distance instrumentation ☕️
