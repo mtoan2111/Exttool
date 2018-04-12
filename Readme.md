@@ -9,7 +9,7 @@ Unlike AFL, AFLGo spends most of its time budget on reaching specific target loc
 * **information flow detection** by setting sensitive sources and sinks as targets. To expose data leakage vulnerabilities, a security researcher would like to generate executions that exercise sensitive sources containing private information and sensitive sinks where data becomes visible to the outside world. A directed fuzzer can be used to generate such executions efficiently.
 * **crash reproduction**  by setting method calls in the stack-trace as targets. When in-field crashes are reported, only the stack-trace and some environmental parameters are sent to the in-house development team. To preserve the user's privacy, the specific crashing input is often not available. AFLGo could help the in-house team to swiftly reproduce these crashes.
 
-AFLGo is based on <a href="http://lcamtuf.coredump.cx/afl/" target="_blank">AFL</a> from Michał Zaleski \<lcamtuf@coredump.cx\>.
+You can see further information about AFLGo at [here](https://github.com/aflgo/aflgo) from Marcel Böhme \<marcel.boehme@acm.org\> 
 
 # Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
 LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
@@ -27,7 +27,7 @@ In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardeni
 Here is the architecture of this tool
 
 <p align="center">
-  <img src="architecture.png" width="100%"/>
+  <img src="Architecture.png" width="100%"/>
 </p>
 
 # Environment Variables
