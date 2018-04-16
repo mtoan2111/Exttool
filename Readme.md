@@ -263,7 +263,7 @@ export HARDENING="-mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-es
 #Set integrated tool environment via our script
 unset CC CXX CFLAGS CXXFLAGS
 $EXT_TOOL/aflgo.py hardenenv
-#Once the command above is executed, AFLGo will be rebuilt under ```HARDENING MODE``` to combine **Hardening** and **AFLGo**
+# Once the command above is executed, AFLGo will be rebuilt under HARDENING MODE
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
   make clean
