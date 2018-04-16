@@ -261,7 +261,7 @@ $EXT_TOOL/aflgo.py gendistance <BIN_FILE>
 # Pass hardening option(s)
 export HARDENING="-mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
 #Set integrated tool environment via our script
-unset AFLGO CC CXX CFLAGS CXXFLAGS
+unset CC CXX CFLAGS CXXFLAGS
 $EXT_TOOL/aflgo.py hardenenv
 #Once the command above is executed, AFLGo will be rebuilt under ```HARDENING MODE``` to combine **Hardening** and **AFLGo**
 # Clean and build subject with distance instrumentation ☕️
