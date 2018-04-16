@@ -126,21 +126,13 @@ sudo pip3 install pydotplus
 ```
 ## Case study
 ### After all prerequisites are installed successful, you can start now.
-1) Checkout source code of our tool and compile it to use
+1) Checkout source code
 ```bash
-# Checkout source code
-git clone https://github.com/aflgo/aflgo.git
-export AFLGO=$PWD/aflgo
+# Set path of tool
+export AFLGO=/path/to/integrated/tool
 # Checkout extended script, this one will help you to use our tool easier
 git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
-
-# Compile source code
-pushd $AFLGO
-  make clean all 
-  cd llvm_mode
-  make clean all
-popd
 ```
 2) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
 ```bash
@@ -173,8 +165,6 @@ cat $TMP_DIR/BBtargets.txt
 ```
 * Alternatively, the targets can be obtained via static analysis tool.
 ```bash
-# Copy extented script into the subject directory
-cp $EXT_TOOL/staticAnalysis.sh $SUBJECT
 # Create result folder to contain all result files while using static analysis tool.
 mkdir result
 export RLT=$PWD/result
@@ -183,49 +173,31 @@ pushd $SUBJECT
   ./autogen.sh
   ./configure --disable-shared
   make -j$(nproc) clean
-  ./staticAnalysis.sh -o $RLT make -j$(nproc) all
+  $EXT_TOOL/aflgo.py gentarget make -j$(nproc) all
 popd
-# After the process above is done, you can use gen_BBtargets.py script to extract BBtargets
-$EXT_TOOL/gen_BBtargets.py $RLT
-# Print extracted targets. 
-echo "Targets:"
-cat $TMP_DIR/BBtargets.txt
-```
-
-**Note 1**: to use static analysis script, you must copy [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) script into your ```SUBJECT``` folder and execute the command line as follow:
+**Note**:If you want to extract BBtargets via static analysis tool, you can execute the command line as follow:
 ```bash
- ./staticAnalysis.sh -o <out_dir> <command>
-    - <out_dir>: output directory of static analysis tool
+ $EXT_TOOL/aflgo.py gentarget  <command>
     - <command>: the command line to compile your subject
 ```
 For example,
 ```bash
-./staticAnalysis.sh -o my_output_folder gcc -g -O3 -o subject subject.c
-  - 'my_output_folder': output directory.
+ $EXT_TOOL/aflgo.py gentarget gcc -g -O3 -o subject subject.c
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
-- If you don't declare output directory, ```/tmp``` is output directory by default.
+- If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 - Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` defined checkers 
 <p align="center">
   <img src="Checkers.png" width="100%"/>
 </p>
 
-
-
-**Note 2**: to use gen_BBtargets script, you can follow the command line
-```bash
- $EXT_TOOL/gen_BBtargets.py <out_dir>
-   - <out_dir>: output directory of static analysis tool
-```
-- BBtargets will be auto-generated into temporary folder.
-- If ```TMP_FILE``` is empty (not set), output file will be generated into ```/tmp``` directory by default.
-
 4) **Note**: If there are no targets, there is nothing to instrument!
 5) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
 # Set aflgo-env
-source $EXT_TOOL/AFLGO_env.sh
+$EXT_TOOL/aflgo.py aflgoenv
+#Once that command is executed, automatically, aflgo will be rebuilt, all related environment will be set then.
 
 # Build libxml2 (in order to generate CG and CFGs).
 # Meanwhile go have a coffee ☕️
@@ -245,16 +217,9 @@ popd
 
 # Test whether CG/CFG extraction was successful
 $SUBJECT/xmllint --valid --recover $SUBJECT/test/dtd3
-ls $TMP_DIR/dot-files
-echo "Function targets"
-cat $TMP_DIR/Ftargets.txt
-
-# Clean up
-cat $TMP_DIR/BBnames.txt | rev | cut -d: -f2- | rev | sort | uniq > $TMP_DIR/BBnames2.txt && mv $TMP_DIR/BBnames2.txt $TMP_DIR/BBnames.txt
-cat $TMP_DIR/BBcalls.txt | sort | uniq > $TMP_DIR/BBcalls2.txt && mv $TMP_DIR/BBcalls2.txt $TMP_DIR/BBcalls.txt
 
 # Generate distance ☕️
-$AFLGO/scripts/genDistance.sh $SUBJECT $TMP_DIR xmllint
+$EXT_TOOL/aflgo.py gendistance xmllint
 
 # Check distance file
 echo "Distance values:"
@@ -262,30 +227,13 @@ head -n5 $TMP_DIR/distance.cfg.txt
 echo "..."
 tail -n5 $TMP_DIR/distance.cfg.txt
 ```
-**Note**: to use genDistance script, you can execute the command line as follow:
+**Note**: to use gendistance option, you can execute the command line as follow:
 ```bash
-./genDistance.sh <SUB_DIR> <TMP_DIR> <BIN_FILE>
-   - <SUB_DIR>: subject directory
-   - <TMP_DIR>: temporary directory
+$EXT_TOOL/aflgo.py <BIN_FILE>
    - <BIN_FILE>: binary file name 
 ```
 6) Note: If `distance.cfg.txt` is empty, there was some problem computing the CG-level and BB-level target distance. See `$TMP_DIR/step*`.
-7) Compile Integrated tool
-```bash
-unset AFLGO CC CXX CFLAGS CXXFLAGS
-# re-define AFLGO path
-export AFLGO=/path/to/integrated/tool
-# Compile integrated tool
-pushd $AFLGO
-  make clean all
-  cd llvm_mode/lowfat
-  chmod 755 install.sh
-  ./install.sh
-  cd ..
-  make clean all
-popd
-```
-8) Instrument subject (i.e., libxml2)
+7) Instrument subject (i.e., libxml2)
 - Hardening tool supports several command line options that are listed below.
  Note that to pass an option to Hardening it must be preceded by `-mllvm` on the command-line, e.g. (`-mllvm -lowfat-no-check-reads`), etc.
  
@@ -309,9 +257,11 @@ popd
 - You can pass these option(s) via ```HARDENING``` evironment variable
 ```bash 
 # Pass hardening option(s)
+unset AFLGO CC CXX CFLAGS CXXFLAGS
 export HARDENING="-mllvm -lowfat-no-check-escape-call -mllvm -lowfat-no-check-escape-return -mllvm -lowfat-no-check-escape-store -mllvm -lowfat-no-check-escape-ptr2int -mllvm -lowfat-no-check-escape-insert"
 #Set integrated tool environment via our script
-source $EXT_TOOL/SAFLGO_env.sh
+$EXT_TOOL/aflgo.py hardenenv
+#Once the command above is executed, AFLGo will be rebuilt under ```HARDENING MODE``` to combine **Hardening** and **AFLGo**
 # Clean and build subject with distance instrumentation ☕️
 pushd $SUBJECT
   make clean
@@ -328,5 +278,5 @@ cp $SUBJECT/test/dtd* in
 cp $SUBJECT/test/dtds/* in
 
 # Run fuzzer
-$AFLGO/afl-fuzz -i in -o out -m none -d $SUBJECT/xmllint --valid --recover @@
+$EXT_TOOL/aflgo.py runfuzzer in out -m none -d $SUBJECT/xmllint --valid --recover @@
 ```
