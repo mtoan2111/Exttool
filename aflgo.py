@@ -26,23 +26,34 @@ def pathExist(name):
     return 0
   return 1
 
-def _compile():
-  # check whether AFLGO env is set
+def _compile(hardening):
   aflgoDir = getEnv('AFLGO')
-  # check whether AFLGO directory is exist
   if not pathExist(aflgoDir):
     raise SystemExit
-  print ('Direct to AFLGo folder')
+  print('Direct to AFLGo folder')
   os.chdir(aflgoDir)
-  print ('Compile AFLGo')
-  subprocess.call(['make','clean','all'], shell=True)
-  print ('Direct to LLVM folder')
-  os.chdir(aflgoDir + '/llvm_mode')
-  print ('Compile LLVM pass')
-  subprocess.call(['make', 'clean', 'all'], shell=True)
+  cmd = 'make clean all'
+  subprocess.call(cmd, shell=True)
+  llvmDir = aflgoDir + '/llvm_mode'
+  if hardening == 1:
+    lowfatDir = llvmDir + '/lowfat'
+    if not pathExist(lowfatDir):
+      raise SystemExit
+    print('Direct to lowfat folder')
+    os.chdir(lowfatDir)
+    print('Compile Hardening')
+    cmd = 'chmod 755 install.sh'
+    subprocess.call(cmd, shell=True)
+    cmd = './install.sh'
+    subprocess.call(cmd, shell=True)
+  print('Direct to llvm folder')
+  os.chdir(llvmDir)
+  cmd = 'make clean all'
+  my_env = os.environ.copy()
+  my_env['HARDENING_MODE'] = '1'
+  subprocess.call(cmd, env=my_env, shell=True)
   # come back root directory
   os.chdir(root)
-  return
 
 def _genTarget():
   # check whether SUBJECT directory is set
@@ -113,21 +124,64 @@ def _genTarget():
     BBtargets.close()
   return
 
-
-
-
-def _setENV():
-  if not os.path.isfile(sys.argv[2]):
-    print ('File doesn\'t exist')
-    print ('Please try again')
+def _setAFLGoENV():
+  aflgoDir = getEnv('AFLGO')
+  if not pathExist(aflgoDir):
     raise SystemExit
-  # execfile(sys.argv[2])
-  cmd = ['bash','-c','source',sys.argv[2]]
-  subprocess.call('source ' + sys.argv[2],shell=True,executable='/bin/bash')
+  _compile(0)
+  clang = aflgoDir + '/afl-clang-fast'
+  clangXX = aflgoDir + '/afl-clang-fast++'
+  if not os.path.isfile(clang) or not os.path.isfile(clangXX):
+    raise SystemExit
 
+  tmpDir = getEnv('TMP_DIR')
+  if not pathExist(tmpDir):
+    raise SystemExit
+  BBDir = tmpDir + '/BBtargets.txt'
+  if not os.path.isfile(BBDir):
+    raise SystemExit
+  BBtarget = open(BBDir)
+  text = BBtarget.read()
+  num = text.count('\n')
+  if num < 1:
+    raise SystemExit
+
+  try:
+    COPY_CFLAGS = os.environ['CFLAGS']
+  except KeyError:
+    COPY_CFLAGS = ''
+  try:
+    COPY_CXXFLAGS = os.environ['CXXFLAGS']
+  except KeyError:
+    COPY_CXXFLAGS = ''
+
+  try:
+    os.unsetenv('CC')
+  except KeyError:
+    pass
+  try:
+    os.unsetenv('CXX')
+  except KeyError:
+    pass
+  try:
+    os.unsetenv('CFLAGS')
+  except KeyError:
+    pass
+  try:
+    os.unsetenv('CXXFLAGS')
+  except KeyError:
+    pass
+
+  CC = aflgoDir + '/afl-clang-fast'
+  CXX = aflgoDir + '/afl-clang-fast++'
+  ADDITIONAL = '-targets=' + tmpDir + '/BBtargets.txt' + ' -outdir=' + tmpDir + ' -flto -fuse-ld=gold -Wl,-plugin-opt=save-temps'
+  os.putenv('CC',CC)
+  os.putenv('CXX',CXX)
+  os.putenv('CFLAGS',COPY_CFLAGS + ' ' + ADDITIONAL)
+  os.putenv('CXXFLAGS',COPY_CFLAGS + ' ' + ADDITIONAL)
+  os.system('bash')
 
 def _genDistance():
-
   aflgoDir = getEnv('AFLGO')
   # check whether AFLGO directory is exist
   if not pathExist(aflgoDir):
@@ -195,14 +249,53 @@ def _genDistance():
   # subprocess.call(cmd)
   print ('gen distance')
 
+def _setHardeningENV():
+  print ('hardening mode')
+  aflgoDir = getEnv('AFLGO')
+  if not pathExist(aflgoDir):
+    raise SystemExit
+  # build HARDENING + AFLGO
+  _compile(1)
+  clang = aflgoDir + '/afl-clang-fast'
+  clangXX = aflgoDir + '/afl-clang-fast++'
+  if not os.path.isfile(clang) or not os.path.isfile(clangXX):
+    raise SystemExit
+
+  tmpDir = getEnv('TMP_DIR')
+  if not pathExist(tmpDir):
+    raise SystemExit
+  BBDir = tmpDir + '/BBtargets.txt'
+  if not os.path.isfile(BBDir):
+    raise SystemExit
+  BBtarget = open(BBDir)
+  text = BBtarget.read()
+  num = text.count('\n')
+  if num < 1:
+    raise SystemExit
+
+  try:
+    HARDENING = os.environ['HARDENING']
+  except KeyError:
+    HARDENING =''
+
+  CC = aflgoDir + '/afl-clang-fast'
+  CXX = aflgoDir + '/afl-clang-fast++'
+  ADDITIONAL = '-distance=' + tmpDir + '/distance.cfg.txt ' + HARDENING
+  os.putenv('CC',CC)
+  os.putenv('CXX',CXX)
+  os.putenv('CFLAGS',ADDITIONAL)
+  os.putenv('CXXFLAGS',ADDITIONAL)
+  os.system('bash')
+
 def _runFuzzer():
   print ('run Fuzzer')
 
 _function={
   'compile': _compile,
-  'genBBtarget': _genTarget,
-  'setenv': _setENV,
-  'genDistance': _genDistance,
+  'gentarget': _genTarget,
+  'aflgoenv': _setAFLGoENV,
+  'hardenenv': _setHardeningENV,
+  'gendistance': _genDistance,
   'runfuzzer': _runFuzzer,
 }
 
