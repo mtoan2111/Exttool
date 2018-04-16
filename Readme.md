@@ -38,7 +38,7 @@ Our tool consists four paths
   - Fuzzer: The last part will generate the test suite to direct to the targets
 
 ## Installation
-### Before using our tool, you need to install required evironment(s) and package(s).
+**Note:** Before using our tool, you need to install all required package(s) and set up all related environment(s).
 1) Install LLVM with Gold-plugin
 ```bash
 LLVM_DEP_PACKAGES="build-essential make cmake ninja-build git subversion python2.7 binutils-gold binutils-dev"
@@ -188,7 +188,7 @@ For example,
 ```
 - If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
-- Thus, You can ```enable/disable``` any checkers as you want by open [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` defined checkers 
+- Thus, You can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
 <p align="center">
   <img src="Checkers.png" width="100%"/>
 </p>
