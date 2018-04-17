@@ -135,6 +135,7 @@ git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 ```
 We deployed an extended tool which will help you to use our tool (```Hardening + Directed Fuzzer```) easier
+
 **Usage**
 ```
 Usage: aflgo.py [option]
