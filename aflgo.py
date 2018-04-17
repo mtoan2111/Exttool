@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from __future__ import print_function
 import subprocess
 import sys
@@ -18,8 +17,8 @@ def usage():
   print ('\n*** Options for runfuzzer ***\n')
   print ('  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] ')
   print ('\n  Required parameters:\n')
-  print ('  inDir ')
-  print ('  outDir ')
+  print ('  inDir         - input directory with test cases')
+  print ('  outDir        - output directory for fuzzer finding')
   print ('\n  Directed fuzzing specific settings\n')
   print ('  -z schedule   - temperature-based power schedules')
   print ('                  {exp, log, lin, quad} (Default: exp)')
@@ -39,11 +38,14 @@ def usage():
   print ('  -M / -S id    - distributed mode (see parallel_fuzzing.txt)')
   print ('  -C            - crash exploration mode (the peruvian rabbit thing)')
 
-def getEnv(name):
+def getEnv(name,isDir,mess):
   if name == '':
     warning ('Error: String empty')
   try:
     env = os.environ[name]
+    if isDir:
+      if not pathExist(env):
+        warning(mess)
     return env
   except KeyError:
     warning ('Can\'t find ' + name + ' environment')
@@ -60,18 +62,18 @@ def pathExist(name):
   return 1
 
 def _compile(hardening):
-  aflgoDir = getEnv('AFLGO')
-  if not pathExist(aflgoDir):
-    raise SystemExit
+  aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
   print('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'Direct to AFLGo folder')
   os.chdir(aflgoDir)
   cmd = 'make clean all'
   subprocess.call(cmd, shell=True)
   llvmDir = aflgoDir + '/llvm_mode'
+  if not pathExist(llvmDir):
+    warning ('llvm_mode directory doesn\'t exist')
   if hardening == 1:
     lowfatDir = llvmDir + '/lowfat'
     if not pathExist(lowfatDir):
-      raise SystemExit
+      warning ('lowfat directory doesn\'t exist')
     print('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'Direct to lowfat folder')
     os.chdir(lowfatDir)
     print('Compile Hardening')
@@ -91,34 +93,21 @@ def _compile(hardening):
 
 def _genTarget():
   # check whether SUBJECT directory is set
-  sbjDir = getEnv('SUBJECT')
-  if not pathExist(sbjDir):
-    warning('SUBJECT directory doesn\'t exist')
-
-  tmpDir = getEnv('TMP_DIR')
-  if not pathExist(tmpDir):
-    warning('Teporary directory doesn\'t exist')
-
-  rltDir = getEnv('RLT')
+  sbjDir = getEnv('SUBJECT',1,'SUBJECT directory doesn\'t exist')
+  tmpDir = getEnv('TMP_DIR',1,'Teporary directory doesn\'t exist')
+  rltDir = getEnv('RLT',0,'')
   if pathExist(rltDir):
     cmd = ['rm', '-rf', rltDir]
     subprocess.Popen(cmd)
-  else:
-    warning('Results directory doesn\'t exist')
   cmd = ['mkdir', rltDir]
   subprocess.Popen(cmd)
 
-  extDir = getEnv('EXT_TOOL')
-  if not pathExist(extDir):
-    warning('Extended tool directory doesn\'t exist')
-
+  extDir = getEnv('EXT_TOOL',1,'Extended tool directory doesn\'t exist')
   if not os.path.isfile(extDir + '/staticAnalysis.sh'):
     warning('Can\'t find staticAnalysis script')
-
   print ('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'Copy script into ' + sbjDir + ' folder')
   cmd = ['cp',extDir +'/staticAnalysis.sh',sbjDir]
   subprocess.call(cmd)
-
   print('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'Run script')
   cmd = ['./staticAnalysis.sh','-o',rltDir]
   if len(sys.argv) < 3:
@@ -148,24 +137,19 @@ def _genTarget():
     print (text)
     num = text.count('\n')
     if num > 0:
-      print ('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'Have ' + str(num) + ' targets are extracted')
+      print ('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + str(num) + ' targets were extracted')
     BBtargets.close()
     print('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'All right, BBtargets file was generated successful. You can go to next step')
 
 def _setAFLGoENV():
-  aflgoDir = getEnv('AFLGO')
-  # check whether AFLGO directory is exist
-  if not pathExist(aflgoDir):
-    warning('AFLGo directory doesn\'t exist')
+  aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
   _compile(0)
   clang = aflgoDir + '/afl-clang-fast'
   clangXX = aflgoDir + '/afl-clang-fast++'
   if not os.path.isfile(clang) or not os.path.isfile(clangXX):
     warning('Can\'t find afl-clang-fast/afl-clang-fast++')
 
-  tmpDir = getEnv('TMP_DIR')
-  if not pathExist(tmpDir):
-    warning('Teporary directory doesn\'t exist')
+  tmpDir = getEnv('TMP_DIR',1,'Teporary directory doesn\'t exist')
   BBDir = tmpDir + '/BBtargets.txt'
   if not os.path.isfile(BBDir):
     warning('BBtargets.txt doesn\'t exist')
@@ -213,19 +197,9 @@ def _setAFLGoENV():
   os.system('bash')
 
 def _genDistance():
-  aflgoDir = getEnv('AFLGO')
-  # check whether AFLGO directory is exist
-  if not pathExist(aflgoDir):
-    warning('AFLGo directory doesn\'t exist')
-
-  sbjDir = getEnv('SUBJECT')
-  if not pathExist(sbjDir):
-    warning('SUBJECT directory doesn\'t exist')
-
-  tmpDir = getEnv('TMP_DIR')
-  if not pathExist(tmpDir):
-    warning('Teporary directory doesn\'t exist')
-
+  aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
+  sbjDir = getEnv('SUBJECT',1,'SUBJECT directory doesn\'t exist')
+  tmpDir = getEnv('TMP_DIR',1,'Teporary directory doesn\'t exist')
   # Print dot-files and count how many CFGs were generated
   dFilesDir = tmpDir + '/dot-files'
   if not pathExist(dFilesDir):
@@ -307,10 +281,7 @@ def _genDistance():
 
 def _setHardeningENV():
   print ('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'hardening mode')
-  aflgoDir = getEnv('AFLGO')
-  # check whether AFLGO directory is exist
-  if not pathExist(aflgoDir):
-    warning('AFLGo directory doesn\'t exist')
+  aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
   # build HARDENING + AFLGO
   _compile(1)
   clang = aflgoDir + '/afl-clang-fast'
@@ -318,9 +289,7 @@ def _setHardeningENV():
   if not os.path.isfile(clang) or not os.path.isfile(clangXX):
     raise SystemExit
 
-  tmpDir = getEnv('TMP_DIR')
-  if not pathExist(tmpDir):
-    warning('Teporary directory doesn\'t exist')
+  tmpDir = getEnv('TMP_DIR',1,'Teporary directory doesn\'t exist')
   BBDir = tmpDir + '/BBtargets.txt'
   if not os.path.isfile(BBDir):
     warning('BBtargets.txt doesn\'t exist')
@@ -338,7 +307,8 @@ def _setHardeningENV():
 
   CC = aflgoDir + '/afl-clang-fast'
   CXX = aflgoDir + '/afl-clang-fast++'
-  ADDITIONAL = '-distance=' + tmpDir + '/distance.cfg.txt ' + HARDENING
+  disFile = tmpDir + '/distance.cfg.txt '
+  ADDITIONAL = '-distance=' + disFile + '-mllvm -lowfat-selective=' + disFile + HARDENING
   os.putenv('CC',CC)
   os.putenv('CXX',CXX)
   os.putenv('CFLAGS',ADDITIONAL)
@@ -351,10 +321,7 @@ def _runFuzzer():
   if len(sys.argv) < 5:
     warning ('Missing input')
 
-  aflgoDir = getEnv('AFLGO')
-  # check whether AFLGO directory is exist
-  if not pathExist(aflgoDir):
-    warning('AFLGo directory doesn\'t exist')
+  aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
 
   fuzzDir = aflgoDir + '/afl-fuzz'
   if not os.path.isfile(fuzzDir):
