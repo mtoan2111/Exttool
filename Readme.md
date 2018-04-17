@@ -134,6 +134,54 @@ export AFLGO=/path/to/integrated/tool
 git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 ```
+We deployed an extended tool which will help you to use our tool (Hardening + Directed Fuzzer) easier
+```bash
+Usage: aflgo.py [option]
+Options:
+
+  usage                        - alfgo.py usage
+  gentarget [cmd]              - Compile subject and generate BBtarget
+  gendistance [bin]            - Caculate distance from CGs and CFGs 
+  aflgoenv                     - Rebuild AFLGo and set all related environments 
+  hardenenv                    - Rebuild AFLGo and set all related environments under Hardening mode 
+  runfuzzer [op] [path] [...]  - Run fuzzer 
+```
+** Options for runfuzzer **
+```bash
+  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] 
+
+  Required parameters:
+
+  inDir         - input directory with test cases
+  outDir        - output directory for fuzzer finding
+
+  Directed fuzzing specific settings
+
+  -z schedule   - temperature-based power schedules
+                  {exp, log, lin, quad} (Default: exp)
+  -c min        - time from start when SA enters exploitation
+                  in secs (s), mins (m), hrs (h), or days (d))
+
+  Execution control settings:
+
+  -f file       - location read by the fuzzed program (stdin)
+  -t msec       - timeout for each run (auto-scaled, 50 - 1000 ms
+  -m megs       - memory limit for child process (50 MB)
+  -Q            - use binary-only instrumentation (QEMU mode)
+
+  Fuzzing behavior settings:
+
+  -d            - quick & dirty mode (skips deterministic steps)
+  -n            - fuzz without instrumentation (dumb mode)
+  -x dir        - optional fuzzer dictionary (see README))
+
+  Other stuff:
+
+  -T text       - text banner to show on the screen
+  -M / -S id    - distributed mode (see parallel_fuzzing.txt)
+  -C            - crash exploration mode (the peruvian rabbit thing)
+```
+Now, Let's go to next step
 2) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
 ```bash
 # Clone subject repository
