@@ -135,6 +135,7 @@ git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 ```
 We deployed an extended tool which will help you to use our tool (```Hardening + Directed Fuzzer```) easier
+**Usage**
 ```bash
 Usage: aflgo.py [option]
 Options:
@@ -178,7 +179,7 @@ Options:
   Other stuff:
 
   -T text       - text banner to show on the screen
-  -M / -S id    - distributed mode (see parallel_fuzzing.txt)
+  -M/-S id      - distributed mode
   -C            - crash exploration mode (the peruvian rabbit thing)
 ```
 Now, Let's go to next step
