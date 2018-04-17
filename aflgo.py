@@ -12,7 +12,7 @@ def usage():
   print ('  gentarget [cmd]              - Compile subject and generate BBtarget')
   print ('  gendistance [bin]            - Caculate distance from CGs and CFGs ')
   print ('  aflgoenv                     - Rebuild AFLGo and set all related environments ')
-  print ('  hardenenv                    - Rebuild AFLGo and set all related environments under Hardening mode ')
+  print ('  hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode ')
   print ('  runfuzzer [op] [path] [...]  - Run fuzzer ')
   print ('\n*** Options for runfuzzer ***\n')
   print ('  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] ')

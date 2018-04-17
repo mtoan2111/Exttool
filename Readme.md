@@ -144,7 +144,7 @@ Options:
   gentarget [cmd]              - Compile subject and generate BBtarget
   gendistance [bin]            - Caculate distance from CGs and CFGs 
   aflgoenv                     - Rebuild AFLGo and set all related environments 
-  hardenenv                    - Rebuild AFLGo and set all related environments under Hardening mode 
+  hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode 
   runfuzzer [op] [path] [...]  - Run fuzzer 
 ```
 **Options for runfuzzer**
