@@ -136,7 +136,7 @@ export EXT_TOOL=$PWD/Exttool
 ```
 We deployed an extended tool which will help you to use our tool (```Hardening + Directed Fuzzer```) easier
 **Usage**
-```bash
+```
 Usage: aflgo.py [option]
 Options:
 
@@ -148,7 +148,7 @@ Options:
   runfuzzer [op] [path] [...]  - Run fuzzer 
 ```
 **Options for runfuzzer**
-```bash
+```
   runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] 
 
   Required parameters:
