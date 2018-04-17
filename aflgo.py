@@ -35,7 +35,7 @@ def usage():
   print ('  -x dir        - optional fuzzer dictionary (see README))')
   print ('\n  Other stuff:\n')
   print ('  -T text       - text banner to show on the screen')
-  print ('  -M / -S id    - distributed mode (see parallel_fuzzing.txt)')
+  print ('  -M / -S id    - distributed mode')
   print ('  -C            - crash exploration mode (the peruvian rabbit thing)')
 
 def getEnv(name,isDir,mess):
