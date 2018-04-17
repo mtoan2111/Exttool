@@ -118,7 +118,7 @@ sudo apt-get install autoconf
 sudo apt-get install automake
 sudo apt-get install libtool-bin
 sudo apt-get install python-bs4
-sudo apt-get install libclang-4.0-dev
+sudo apt-get install libclang-4.0-dev`
 sudo pip3 install --upgrade pip
 sudo pip3 install networkx
 sudo pip3 install pydot
@@ -134,7 +134,7 @@ export AFLGO=/path/to/integrated/tool
 git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 ```
-We deployed an extended tool which will help you to use our tool (Hardening + Directed Fuzzer) easier
+We deployed an extended tool which will help you to use our tool (```Hardening + Directed Fuzzer```) easier
 ```bash
 Usage: aflgo.py [option]
 Options:
@@ -146,7 +146,7 @@ Options:
   hardenenv                    - Rebuild AFLGo and set all related environments under Hardening mode 
   runfuzzer [op] [path] [...]  - Run fuzzer 
 ```
-** Options for runfuzzer **
+**Options for runfuzzer**
 ```bash
   runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] 
 
