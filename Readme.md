@@ -28,7 +28,7 @@ In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardeni
 Here is the architecture of this tool
 
 <p align="center">
-  <img src="Architecture.png" width="100%"/>
+  <img src="/imgs/Architecture.png" width="100%"/>
 </p>
 
 Our tool consists four paths
@@ -238,7 +238,7 @@ For example,
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 - Thus, You can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
 <p align="center">
-  <img src="Checkers.png" width="100%"/>
+  <img src="/imgs/Checkers.png" width="100%"/>
 </p>
 
 4) **Note**: If there are no targets, there is nothing to instrument!
