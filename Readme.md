@@ -332,3 +332,8 @@ cp $SUBJECT/test/dtds/* in
 # Run fuzzer
 $EXT_TOOL/aflgo.py runfuzzer in out -m none -d $SUBJECT/xmllint --valid --recover @@
 ```
+<p align="center">
+  <img src="/imgs/Fuzzing.png" width="100%"/>
+</p>
+
+

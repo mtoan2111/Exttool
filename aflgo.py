@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from __future__ import print_function
 import subprocess
 import sys
@@ -272,11 +273,6 @@ def _genDistance():
   cfgFile.close()
   if num < 1:
     warning ('distance.cfg.txt is empty')
-  for line in range(0, 5):
-    print(txt[line])
-  print('...')
-  for line in range(-5, 0):
-    print(txt[line])
   print('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'All right, distance file was generated successful. You can go to next step')
 
 def _setHardeningENV():
@@ -308,7 +304,7 @@ def _setHardeningENV():
   CC = aflgoDir + '/afl-clang-fast'
   CXX = aflgoDir + '/afl-clang-fast++'
   disFile = tmpDir + '/distance.cfg.txt '
-  ADDITIONAL = '-distance=' + disFile + '-mllvm -lowfat-selective=' + disFile + HARDENING
+  ADDITIONAL = '-distance=' + disFile + '-mllvm -lowfat-selective=' + BBDir + ' ' + HARDENING
   os.putenv('CC',CC)
   os.putenv('CXX',CXX)
   os.putenv('CFLAGS',ADDITIONAL)
@@ -330,7 +326,7 @@ def _runFuzzer():
   inDir = sys.argv[2]
   outDir = sys.argv[3]
   mils = ''
-  for s in sys.argv[3:-1]:
+  for s in sys.argv[4:]:
     mils = mils + s + ' '
 
   cmd = fuzzDir + ' -i ' + inDir + ' -o ' + outDir + ' ' + mils
