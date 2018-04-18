@@ -1,29 +1,7 @@
 # Hardening plus Driected Fuzzing
 ## Introduction
-### AFLGo: Directed Greybox Fuzzing
-AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
-Given a set of target locations (e.g., `folder/file.c:582`), AFLGo generates inputs specifically with the objective to exercise these target locations.
-
-Unlike AFL, AFLGo spends most of its time budget on reaching specific target locations without wasting resources stressing unrelated program components. This is particularly interesting in the context of
-* **patch testing** by setting changed statements as targets. When a critical component is changed, we would like to check whether this introduced any vulnerabilities. AFLGo, a fuzzer that can focus on those changes, has a higher chance of exposing the regression.
-* **static analysis report verification** by setting statements as targets that a static analysis reports as potentially dangerous or vulnerability-inducing. When assessing the security of a program, static analysis tools might identify dangerous locations, such as critical system calls. AFLGo can generate inputs that actually show that this is indeed no false positive.
-* **information flow detection** by setting sensitive sources and sinks as targets. To expose data leakage vulnerabilities, a security researcher would like to generate executions that exercise sensitive sources containing private information and sensitive sinks where data becomes visible to the outside world. A directed fuzzer can be used to generate such executions efficiently.
-* **crash reproduction**  by setting method calls in the stack-trace as targets. When in-field crashes are reported, only the stack-trace and some environmental parameters are sent to the in-house development team. To preserve the user's privacy, the specific crashing input is often not available. AFLGo could help the in-house team to swiftly reproduce these crashes.
-
-You can find out further information about AFLGo at [here](https://github.com/aflgo/aflgo) 
-
-### Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
-LowFat is a new bounds checking system for the `x86-64` based on the idea *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
-
-The basic idea of *low-fat pointers* is to encode bounds information (size and base) directly into the native bit representation of a pointer itself. This bounds information can then retrieved at runtime, and be checked whenever the pointer is accessed, thereby preventing OOB-errors.  Low-fat pointers have several advantages compared to existing bounds checking systems, namely:
-
-* *Memory Usage*: Since object bounds information is stored directly in pointers (and not is some other meta data region), the memory overheads of LowFat is very low.
-* *Compatibility*: Since low-fat pointers are also ordinary pointers, LowFat achieves high binary compatibility.
-* *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
-
-You can find out further information about Lowfat at [here](https://github.com/GJDuck/LowFat)
 ### Hardening plus Directed Fuzzing
-In Tsunami Project, we proposed to combine LowFat to AFLGo (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo
+We proposed to combine LowFat to AFLGo (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo
 
 Here is the architecture of this tool
 
@@ -37,6 +15,31 @@ Our tool consists four paths
   - Binary Instrumentor: Based on targets and information from part 2, this part will instrument the binary file
   - Fuzzer: The last part will generate the test suite to direct to the targets
 
+We also deployed an extended script ```aflgo.py``` which help you to use our tool easier
+```To be continued...```
+
+### AFLGo: Directed Greybox Fuzzing
+AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
+Given a set of target locations (e.g., `folder/file.c:582`), AFLGo generates inputs specifically with the objective to exercise these target locations.
+
+Unlike AFL, AFLGo spends most of its time budget on reaching specific target locations without wasting resources stressing unrelated program components. This is particularly interesting in the context of
+* **patch testing** by setting changed statements as targets. When a critical component is changed, we would like to check whether this introduced any vulnerabilities. AFLGo, a fuzzer that can focus on those changes, has a higher chance of exposing the regression.
+* **static analysis report verification** by setting statements as targets that a static analysis reports as potentially dangerous or vulnerability-inducing. When assessing the security of a program, static analysis tools might identify dangerous locations, such as critical system calls. AFLGo can generate inputs that actually show that this is indeed no false positive.
+* **information flow detection** by setting sensitive sources and sinks as targets. To expose data leakage vulnerabilities, a security researcher would like to generate executions that exercise sensitive sources containing private information and sensitive sinks where data becomes visible to the outside world. A directed fuzzer can be used to generate such executions efficiently.
+* **crash reproduction**  by setting method calls in the stack-trace as targets. When in-field crashes are reported, only the stack-trace and some environmental parameters are sent to the in-house development team. To preserve the user's privacy, the specific crashing input is often not available. AFLGo could help the in-house team to swiftly reproduce these crashes.
+
+You can find out further information about AFLGo at [here](https://github.com/aflgo/aflgo) 
+
+### Lowfat: Lean C/C++ Bounds Checking with Low-Fat Pointers
+LowFat is a new bounds checking system for the `x86-64` based on the idea of *low-fat pointers*.  LowFat is designed to detect object *out-of-bounds* errors (OOB-errors), such as buffer overflows (or underflows), that are a common source of crashes, security vulnerabilities, and other program misbehavior.  LowFat is designed to have low overheads, especially memory, compared to other bounds checking systems.
+
+The basic idea of *low-fat pointers* is to encode bounds information (size and base) directly into the native bit representation of a pointer itself. This bounds information can then retrieved at runtime, and be checked whenever the pointer is accessed, thereby preventing OOB-errors.  Low-fat pointers have several advantages compared to existing bounds checking systems, namely:
+
+* *Memory Usage*: Since object bounds information is stored directly in pointers (and not is some other meta data region), the memory overheads of LowFat is very low.
+* *Compatibility*: Since low-fat pointers are also ordinary pointers, LowFat achieves high binary compatibility.
+* *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
+
+You can find out further information about Lowfat at [here](https://github.com/GJDuck/LowFat)
 ## Installation
 **Note:** Before using our tool, you need to install all required package(s) and set up all related environment(s).
 1) Install LLVM with Gold-plugin
@@ -143,7 +146,9 @@ Options:
 
   usage                        - alfgo.py usage
   gentarget [cmd]              - Compile subject and generate BBtarget
-  gendistance [bin]            - Caculate distance from CGs and CFGs 
+                                 [cmd] - the command line to compile subject 
+  gendistance [bin]            - Caculate distance from CGs and CFGs
+                                 [bin] - binary file name 
   aflgoenv                     - Rebuild AFLGo and set all related environments 
   hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode 
   runfuzzer [op] [path] [...]  - Run fuzzer 
