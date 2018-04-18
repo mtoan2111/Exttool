@@ -16,7 +16,7 @@ Our tool consists four paths
   - Fuzzer: The last part will generate the test suite to direct to the targets
 
 We also deployed an extended script ```aflgo.py``` which help you to use our tool easier
-```To be continued...```
+The usage of this script is described in the next section.
 
 ### AFLGo: Directed Greybox Fuzzing
 AFLGo is an extension of <a href="https://lcamtuf.coredump.cx/afl/" target="_blank">American Fuzzy Lop (AFL)</a>.
@@ -40,6 +40,75 @@ The basic idea of *low-fat pointers* is to encode bounds information (size and b
 * *Speed*: Low-fat pointers are fast relative to other bounds-checking systems.
 
 You can find out further information about Lowfat at [here](https://github.com/GJDuck/LowFat)
+## The usage of aflgo.py
+ 
+**Usage**
+```
+Usage: aflgo.py [option]
+Options:
+
+  usage                        - alfgo.py usage
+  gentarget [cmd]              - Compile subject and generate BBtarget
+                                 [cmd] - the command line to compile subject 
+  gendistance [bin]            - Caculate distance from CGs and CFGs
+                                 [bin] - binary file name 
+  aflgoenv                     - Rebuild AFLGo and set all related environments 
+  hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode 
+  runfuzzer [op] [path] [...]  - Run fuzzer 
+```
+**Options for runfuzzer**
+```
+  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] 
+
+  Required parameters:
+
+  inDir         - input directory with test cases
+  outDir        - output directory for fuzzer finding
+
+  Directed fuzzing specific settings
+
+  -z schedule   - temperature-based power schedules
+                  {exp, log, lin, quad} (Default: exp)
+  -c min        - time from start when SA enters exploitation
+                  in secs (s), mins (m), hrs (h), or days (d))
+
+  Execution control settings:
+
+  -f file       - location read by the fuzzed program (stdin)
+  -t msec       - timeout for each run (auto-scaled, 50 - 1000 ms
+  -m megs       - memory limit for child process (50 MB)
+  -Q            - use binary-only instrumentation (QEMU mode)
+
+  Fuzzing behavior settings:
+
+  -d            - quick & dirty mode (skips deterministic steps)
+  -n            - fuzz without instrumentation (dumb mode)
+  -x dir        - optional fuzzer dictionary (see README))
+
+  Other stuff:
+
+  -T text       - text banner to show on the screen
+  -M/-S id      - distributed mode
+  -C            - crash exploration mode (the peruvian rabbit thing)
+```
+**Note**:If you want to extract BBtargets via static analysis tool, you can execute the command line as follow:
+```bash
+ $EXT_TOOL/aflgo.py gentarget  <command>
+    - <command>: the command line to compile your subject
+```
+For example,
+```bash
+ $EXT_TOOL/aflgo.py gentarget gcc -g -O3 -o subject subject.c
+  - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
+```
+- If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
+- We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
+- Thus, You can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
+<p align="center">
+  <img src="/imgs/Checkers.png" width="100%"/>
+</p>
+
+
 ## Installation
 **Note:** Before using our tool, you need to install all required package(s) and set up all related environment(s).
 1) Install LLVM with Gold-plugin
@@ -137,57 +206,6 @@ export AFLGO=/path/to/integrated/tool
 git clone https://github.com/mtoan2111/Exttool.git
 export EXT_TOOL=$PWD/Exttool
 ```
-We deployed an extended tool which will help you to use our tool (```Hardening + Directed Fuzzer```) easier
-
-**Usage**
-```
-Usage: aflgo.py [option]
-Options:
-
-  usage                        - alfgo.py usage
-  gentarget [cmd]              - Compile subject and generate BBtarget
-                                 [cmd] - the command line to compile subject 
-  gendistance [bin]            - Caculate distance from CGs and CFGs
-                                 [bin] - binary file name 
-  aflgoenv                     - Rebuild AFLGo and set all related environments 
-  hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode 
-  runfuzzer [op] [path] [...]  - Run fuzzer 
-```
-**Options for runfuzzer**
-```
-  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] 
-
-  Required parameters:
-
-  inDir         - input directory with test cases
-  outDir        - output directory for fuzzer finding
-
-  Directed fuzzing specific settings
-
-  -z schedule   - temperature-based power schedules
-                  {exp, log, lin, quad} (Default: exp)
-  -c min        - time from start when SA enters exploitation
-                  in secs (s), mins (m), hrs (h), or days (d))
-
-  Execution control settings:
-
-  -f file       - location read by the fuzzed program (stdin)
-  -t msec       - timeout for each run (auto-scaled, 50 - 1000 ms
-  -m megs       - memory limit for child process (50 MB)
-  -Q            - use binary-only instrumentation (QEMU mode)
-
-  Fuzzing behavior settings:
-
-  -d            - quick & dirty mode (skips deterministic steps)
-  -n            - fuzz without instrumentation (dumb mode)
-  -x dir        - optional fuzzer dictionary (see README))
-
-  Other stuff:
-
-  -T text       - text banner to show on the screen
-  -M/-S id      - distributed mode
-  -C            - crash exploration mode (the peruvian rabbit thing)
-```
 Now, Let's go to next step
 
 2) Download subject (<a href="http://xmlsoft.org/" target="_blank">libxml2</a>)
@@ -232,23 +250,6 @@ pushd $SUBJECT
   $EXT_TOOL/aflgo.py gentarget make -j$(nproc) all
 popd
 ```
-**Note**:If you want to extract BBtargets via static analysis tool, you can execute the command line as follow:
-```bash
- $EXT_TOOL/aflgo.py gentarget  <command>
-    - <command>: the command line to compile your subject
-```
-For example,
-```bash
- $EXT_TOOL/aflgo.py gentarget gcc -g -O3 -o subject subject.c
-  - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
-```
-- If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
-- We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
-- Thus, You can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
-<p align="center">
-  <img src="/imgs/Checkers.png" width="100%"/>
-</p>
-
 4) **Note**: If there are no targets, there is nothing to instrument!
 5) Generate CG and intra-procedural CFGs from subject (i.e., libxml2).
 ```bash
