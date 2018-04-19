@@ -76,12 +76,12 @@ Options:
 ```
 **Note**:If you want to extract BBtargets via static analysis tool, you can execute the command line as follow:
 ```bash
- $EXT_TOOL/aflgo.py gentarget  <command>
+ ./aflgo.py gentarget  <command>
     - <command>: the command line to compile your subject
 ```
 For example,
 ```bash
- $EXT_TOOL/aflgo.py gentarget gcc -g -O3 -o subject subject.c
+ ./aflgo.py gentarget gcc -g -O3 -o subject subject.c
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
 - If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
