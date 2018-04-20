@@ -1,4 +1,4 @@
-# Hardening plus Driected Fuzzing
+# Hardening plus Directed Fuzzing
 ## Introduction
 Fuzzing is an automated testing technique that providing unexpected, random data by using some mutating operators as seek inputs to a program. Typically, a fuzzer can be categorized as follow:
  - Generation-based or mutation-based by modifying a little bit existing inputs,
