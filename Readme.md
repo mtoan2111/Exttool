@@ -33,7 +33,7 @@ Options:
   usage                        - alfgo.py usage
   gentarget [cmd]              - Compile subject and generate BBtarget
                                  [cmd] - the command line to compile subject 
-  gendistance [bin]            - Caculate distance from CGs and CFGs
+  gendistance [bin]            - Calculate distance from CGs and CFGs
                                  [bin] - binary file name 
   aflgoenv                     - Rebuild AFLGo and set all related environments 
   hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode 
@@ -84,7 +84,7 @@ For example,
  ./aflgo.py gentarget gcc -g -O3 -o subject subject.c
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
-- If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
+- If you don't declare output ```RLT``` directory, ```/tmp``` will be a output directory by default.
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
 - Thus, you can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
 <p align="center">

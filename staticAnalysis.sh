@@ -2,7 +2,7 @@
 clang_4_0=$(which clang-4.0)
 clang=$(which clang)
 checker_path=``
-HAVE_CLANG_4=false
+HAVE_CLANG_4=false 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 OFF='\033[0m'
