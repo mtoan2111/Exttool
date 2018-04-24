@@ -13,7 +13,7 @@ def usage():
   print ('  gentarget [cmd]              - Compile subject and generate BBtarget')
   print ('  gendistance [bin]            - Caculate distance from CGs and CFGs ')
   print ('  aflgoenv                     - Rebuild AFLGo and set all related environments ')
-  print ('  hardenenv                    - Rebuild AFLGo and set all related environments combining Hardening mode ')
+  print ('  hardenenv                    - Rebuild AFLGo and set all related environments under Hardening mode ')
   print ('  runfuzzer [op] [path] [...]  - Run fuzzer ')
   print ('\n*** Options for runfuzzer ***\n')
   print ('  runfuzzer [ options ] -- /path/to/fuzzed_app [ ... ] ')
@@ -36,7 +36,7 @@ def usage():
   print ('  -x dir        - optional fuzzer dictionary (see README))')
   print ('\n  Other stuff:\n')
   print ('  -T text       - text banner to show on the screen')
-  print ('  -M / -S id    - distributed mode')
+  print ('  -M / -S id    - distributed mode (see parallel_fuzzing.txt)')
   print ('  -C            - crash exploration mode (the peruvian rabbit thing)')
 
 def getEnv(name,isDir,mess):
@@ -49,7 +49,11 @@ def getEnv(name,isDir,mess):
         warning(mess)
     return env
   except KeyError:
-    warning ('Can\'t find ' + name + ' environment')
+    if not isDir:
+      pass
+    else:
+      warning ('Can\'t find ' + name + ' environment')
+    pass
 
 def warning(mess):
   print ('\033[1;31m' + sys.argv[0] + ':\033[0;0m ' + mess)
@@ -58,9 +62,11 @@ def warning(mess):
   raise SystemExit
 
 def pathExist(name):
-  if not os.path.isdir(name):
-    return 0
-  return 1
+  if not name == '':
+    if not os.path.isdir(name):
+      return 0
+    return 1
+  return 0
 
 def _compile(hardening):
   aflgoDir = getEnv('AFLGO',1,'AFLGo directory doesn\'t exist')
@@ -97,9 +103,18 @@ def _genTarget():
   sbjDir = getEnv('SUBJECT',1,'SUBJECT directory doesn\'t exist')
   tmpDir = getEnv('TMP_DIR',1,'Teporary directory doesn\'t exist')
   rltDir = getEnv('RLT',0,'')
-  if pathExist(rltDir):
-    cmd = ['rm', '-rf', rltDir]
-    subprocess.Popen(cmd)
+  isDefault = 0
+  if rltDir:
+    if pathExist(rltDir):
+      cmd = ['rm', '-rf', rltDir]
+      subprocess.Popen(cmd)
+  else:
+    isDefault = 1
+    print ('\033[1;33m' + sys.argv[0] + ':\033[0;0m ' + 'RLT_TMP isn\'t set!. Using the default directory')
+    rltDir = '/tmp/result'
+    if pathExist(rltDir):
+      cmd = ['rm', '-rf', rltDir]
+      subprocess.Popen(cmd)
   cmd = ['mkdir', rltDir]
   subprocess.Popen(cmd)
 
@@ -268,7 +283,7 @@ def _genDistance():
     warning ('distance.cfg.txt doesn\'t exist')
 
   cfgFile = open(cfgDir)
-  txt = cfgFile.read()
+  txt = cfgFile.readline()
   num = txt.count('\n')
   cfgFile.close()
   if num < 1:
@@ -328,9 +343,11 @@ def _runFuzzer():
   mils = ''
   for s in sys.argv[4:]:
     mils = mils + s + ' '
-
+    print (s)
+  print (sys.argv)
   cmd = fuzzDir + ' -i ' + inDir + ' -o ' + outDir + ' ' + mils
-  subprocess.call(cmd,shell=True)
+  print (cmd)
+  # subprocess.call(cmd,shell=True)
 
 _function={
   'usage': usage,
