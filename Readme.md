@@ -1,4 +1,4 @@
-# Hardening plus Driected Fuzzing
+# Hardening plus Directed Fuzzing
 ## Introduction
 Fuzzing is an automated testing technique that providing unexpected, random data by using some mutating operators as seek inputs to a program. Typically, a fuzzer can be categorized as follow:
  - Generation-based or mutation-based by modifying a little bit existing inputs,
@@ -7,9 +7,9 @@ Fuzzing is an automated testing technique that providing unexpected, random data
 
 Currently, grey box fuzzing (GF) is considered the state-of-the-art in vulnerability detection. American Fuzzy Loop (AFL - a grey box fuzzer) is a popular fuzzer that employ heuristics in order to increase code coverage. New inputs are provided by using mutate operators and added to the fuzzer's queue if the exercise a new and interesting path. Unlike AFL, **AFLGo** - an extension of AFL spends most of it's time budget on reaching specific target locations without wasting resources stressing unrelated program components
 
-Moreover, the system code and a large number of programs are usually written in low-level language, C/C++ for example. These programming languages do not provide any mechanismes to protect against memory errors and this is a well known source of security vulnerabilities and exploits. **Lowfat** - a hardening tool is designed to detect object *out-of-bounds* errors (OOB-erros), such as buffer overflow/underflow, that are a commom source of crashes, security vulnerabilities, and other program misbehaviors. Lowfat is designed to have low overheads, especially memory, compared to other bound checking systems.
+Moreover, the system code and a large number of programs are usually written in low-level language, C/C++ for example. These programming languages do not provide any mechanisms to protect against memory errors and this is a well known source of security vulnerabilities and exploits. **Lowfat** - a hardening tool is designed to detect object *out-of-bounds* errors (OOB-erros), such as buffer overflow/underflow, that are a commom source of crashes, security vulnerabilities, and other program misbehaviors. Lowfat is designed to have low overheads, especially memory, compared to other bound checking systems.
 
-Based on the operation mechanismes of **AFLGo** and **LowFat**, we proposed to combine both of them (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo. To provide targets input for AFLGo, the static analysis technique (Clang checker) is used to analyse and obtain some potentail fault localization. 
+Based on the operation mechanisms of **AFLGo** and **LowFat**, we proposed to combine both of them (we call it **Hardening plus Directed Fuzzing**) so that one can improve the performance of AFLGo. To provide targets input for AFLGo, the static analysis technique (Clang checker) is used to analyse and obtain some potentail fault localization. 
 
 We also deployed an extension script ```aflgo.py``` which help you to use our tool easier. For the usage of our script, please following the next section.
 Here is the architecture of ```Hardening plus Directed Fuzzzing```
@@ -76,17 +76,17 @@ Options:
 ```
 **Note**:If you want to extract BBtargets via static analysis tool, you can execute the command line as follow:
 ```bash
- $EXT_TOOL/aflgo.py gentarget  <command>
+ ./aflgo.py gentarget  <command>
     - <command>: the command line to compile your subject
 ```
 For example,
 ```bash
- $EXT_TOOL/aflgo.py gentarget gcc -g -O3 -o subject subject.c
+ ./aflgo.py gentarget gcc -g -O3 -o subject subject.c
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
 - If you don't declare output ```RLT``` directory, ```/tmp``` is output directory by default.
 - We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
-- Thus, You can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
+- Thus, you can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
 <p align="center">
   <img src="/imgs/Checkers.png" width="100%"/>
 </p>
