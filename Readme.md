@@ -85,8 +85,8 @@ For example,
   - 'gcc -g -O3 -o subject subject.c': command line to compile the subject.
 ```
 - If you don't declare output ```RLT``` directory, ```/tmp``` will be a output directory by default.
-- We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file.
-- Thus, you can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/af3a97b1c86ae94b35415e36df2659ee2cbe9a88/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
+- We defined all the checkers including the description of each checker in the [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/master/staticAnalysis.sh#L41) file.
+- Thus, you can ```enable/disable``` any checkers as you want by opening [staticAnalysis.sh](https://github.com/mtoan2111/Exttool/blob/master/staticAnalysis.sh#L41) file and ```comment/uncomment``` any defined checkers 
 <p align="center">
   <img src="/imgs/Checkers.png" width="100%"/>
 </p>
